@@ -1,6 +1,7 @@
 export type LLMResult = {
   name: string,
   phone: string,
+  email: string,
   experiences: {
     company: string,
     time: string,
@@ -46,7 +47,7 @@ export type LLMResult = {
     time: string,
     description: string
   }[],
-  aboutTheApplicant: string,
+  summary: string,
   title: string,
   address: string,
   ai_recommendation: string

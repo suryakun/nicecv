@@ -32,8 +32,8 @@ export default async function FileProcess(filePath: string) : Promise<LLMResult>
   const splits = await textSplitter.splitDocuments(docs)
 
   const vectorStore = await MemoryVectorStore.fromDocuments(
-      splits,
-      new GoogleGenerativeAIEmbeddings()
+    splits,
+    new GoogleGenerativeAIEmbeddings(),
   )
 
   const retriever = vectorStore.asRetriever();
@@ -58,8 +58,10 @@ export default async function FileProcess(filePath: string) : Promise<LLMResult>
     15. **Educations**: A list of educational qualifications the individual has, including the education name, time period, and description.
     16. **About the Applicant**: A brief summary of the individual's background and qualifications.
     17. **Title**: The title or position of the individual.
+    18. **Summary**: Summary of the candidate.
+    19. **AI Recommendation**: Recommend how to enhance the CV both in terms of content and structure.
 
-    The text from the PDF file will look like this and don't summarize the text:
+    The text from the PDF file will look like this:
 
     ---
     Name: John Doe
@@ -68,6 +70,9 @@ export default async function FileProcess(filePath: string) : Promise<LLMResult>
     Phone: (123) 456-7890
     Skills: JavaScript, Python, React, Node.js
     Links: www.johndoe.com
+
+    Summary: Experienced software developer with a passion for building innovative web applications.
+
     Experiences:
     - Company: ABC Inc.
       Time: 2015-2017
@@ -120,22 +125,25 @@ export default async function FileProcess(filePath: string) : Promise<LLMResult>
     Title: Senior Software Engineer
     ---
 
+    AI Recommendation: The candidate should consider adding more details about their recent projects and achievements to showcase their skills and experience effectively.
+
     Extract the information and return it in JSON format.
   `;
   const schema = z.object({
-    aboutTheApplicant: z.string().describe('about the applicant').optional().nullable().transform(val => val ?? ''),
+    summary: z.string().describe('what is the summary of the candidate?').optional().nullable().transform(val => val ?? ''),
     title: z.string().describe('title of applicant').optional().nullable().transform(val => val ?? ''),
     name: z.string().describe('name of applicant').optional().nullable().transform(val => val ?? ''),
-    phone: z.string().describe('phone number of applicant').optional().nullable().transform(val => val ?? ''),
-    address: z.string().describe('address of applicant').optional().nullable().transform(val => val ?? ''),
+    email: z.string().describe('email of applicant').optional().nullable().transform(val => val ?? ''),
+    phone: z.string().describe('what is the phone number of the applicant?').optional().nullable().transform(val => val ?? ''),
+    address: z.string().describe('where is the applicant address?').optional().nullable().transform(val => val ?? ''),
     experiences: z.array(z.object({
-        company: z.string().describe('company name').optional().nullable().transform(val => val ?? ''),
+        company: z.string().describe('what is company name?').optional().nullable().transform(val => val ?? ''),
         time: z.string().describe('work time year start and year end').optional().nullable().transform(val => val ?? ''),
         title: z.string().describe('applicant job title').optional().nullable().transform(val => val ?? ''),
         jobDetail: z.string().describe('what did the applicant do and what the job about, don\'t summarize the text').optional().nullable().or(z.literal(''))
     })).describe('Detail of applicant experiences').transform(arr => arr ?? []),
     skills: z.array(z.string()).describe('applicant skills').optional().nullable().transform(val => val ?? []),
-    links: z.array(z.string()).describe('applicant links').optional().nullable().transform(val => val ?? []),
+    links: z.array(z.string()).describe('applicant links').optional().nullable(),
     courses: z.array(z.object({
         name: z.string().describe('course name').optional().nullable().transform(val => val ?? ''),
         time: z.string().describe('course time year start and year end').optional().nullable().transform(val => val ?? ''),
@@ -150,7 +158,7 @@ export default async function FileProcess(filePath: string) : Promise<LLMResult>
         name: z.string().describe('language name').optional().nullable().transform(val => val ?? ''),
         level: z.string().describe('language level').optional().nullable().transform(val => val ?? ''),
     })).describe('Detail of applicant languages').transform(arr => arr ?? []),
-    hobbies: z.array(z.string()).describe('applicant hobbies').optional().nullable().transform(val => val ?? []),
+    hobbies: z.array(z.string()).describe('applicant hobbies').optional().nullable(),
     references: z.array(z.object({
         name: z.string().describe('reference name').optional().nullable().transform(val => val ?? ''),
         position: z.string().describe('reference position').optional().nullable().transform(val => val ?? ''),
@@ -173,7 +181,7 @@ export default async function FileProcess(filePath: string) : Promise<LLMResult>
         time: z.string().describe('education time year start and year end').optional().nullable().transform(val => val ?? ''),
         description: z.string().describe('education description').optional().nullable().transform(val => val ?? ''),
     })).describe('Detail of applicant educations').transform(arr => arr ?? []),
-    ai_recommendation: z.string().optional().nullable().transform(val => val ?? '')
+    ai_recommendation: z.string().describe('Recommendation how to enhance the CV both of content, structure and typo or grammar').optional().nullable(),
   })
 
   const parser = StructuredOutputParser.fromZodSchema(schema)
