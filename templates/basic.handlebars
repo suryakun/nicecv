@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<body>
+<div style="display: flex; flex-direction: column;" scale="1.16">
+    <h1>{{name}}</h1>
+    <p>{{address}}</p>
+    <p>{{phone}}</p>
+    <p>{{email}}</p>
+    <p>{{title}}</p>
+    <p>{{summary}}</p>
+    <h2>Experience</h2>
+    {{#each experiences}}
+        <h3>{{this.company}}</h3>
+        <p>{{this.work_time}}</p>
+        <p>{{this.title}}</p>
+        <p>{{this.job_detail}}</p>
+    {{/each}}
+    <h2>Education</h2>
+    {{#each education}}
+        <h3>{{this.name}}</h3>
+        <p>{{this.time}}</p>
+        <p>{{this.description}}</p>
+    {{/each}}
+    <h2>Skills</h2>
+    {{#each skills}}
+        <p>{{this.skill_name}}</p>
+    {{/each}}
+    <h2>References</h2>
+    {{#each references}}
+        <h3>{{this.name}}</h3>
+        <p>{{this.position}}</p>
+    {{/each}}
+</div>
+</body>

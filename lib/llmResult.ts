@@ -1,48 +1,52 @@
 export type LLMResult = {
+  id?: string,
   name: string,
   phone: string,
   email: string,
-  experiences: {
+  experience: {
     company: string,
-    time: string,
+    workTime: string,
     title: string,
-    jobDescription: string
+    jobDetail: string
   }[],
-  skills: string[],
+  skill: {
+    skillName: string,
+    yearOfExperience: number
+  }[],
   links: string[],
-  courses: {
+  course: {
     name: string,
     time: string,
     description: string
   }[],
-  awards: {
+  award: {
     name: string,
     time: string,
     description: string
   }[],
-  languages: {
+  language: {
     name: string,
     level: string
   }[],
   hobbies: string[],
-  references: {
+  reference: {
     name: string,
     position: string,
     company: string,
     phone: string,
     email: string
   }[],
-  certifications: {
+  certification: {
     name: string,
     time: string,
     description: string
   }[],
-  publications: {
+  publication: {
     name: string,
     time: string,
     description: string
   }[],
-  educations: {
+  education: {
     name: string,
     time: string,
     description: string
@@ -50,5 +54,5 @@ export type LLMResult = {
   summary: string,
   title: string,
   address: string,
-  ai_recommendation: string
+  aiRecommendation: string
 }

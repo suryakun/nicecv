@@ -1,0 +1,167 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Resume Resume[]
+}
+
+model Resume {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?     @relation(fields: [userId], references: [id])
+  title     String?
+  summary   String?
+  name      String?
+  email     String?
+  phone     String?
+  address   String?
+  links     String[]
+  hobbies  String[]
+  aiRecommendation String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  experience Experience[]
+
+  skill Skill[]
+
+  course Course[]
+
+  award Award[]
+
+  language Language[]
+
+  reference Reference[]
+
+  certification Certification[]
+
+  publication Publication[]
+
+  education Education[]
+}
+
+model Experience {
+  id        String   @id @default(cuid())
+  resumeId  String
+  resume    Resume   @relation(fields: [resumeId], references: [id])
+  company  String?
+  workTime String?
+  title    String?
+  jobDetail String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Skill {
+  id        String   @id @default(cuid())
+  resumeId  String
+  resume    Resume   @relation(fields: [resumeId], references: [id])
+  skillName String?
+  yearOfExperience Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Course {
+  id        String   @id @default(cuid())
+  resumeId  String
+  resume    Resume   @relation(fields: [resumeId], references: [id])
+  name     String?
+  time     String?
+  description String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Award {
+  id        String   @id @default(cuid())
+  resumeId  String
+  resume    Resume   @relation(fields: [resumeId], references: [id])
+  name     String?
+  time     String?
+  description String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Language {
+  id        String   @id @default(cuid())
+  resumeId  String
+  resume    Resume   @relation(fields: [resumeId], references: [id])
+  name     String?
+  level    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Reference {
+  id        String   @id @default(cuid())
+  resumeId  String
+  resume    Resume   @relation(fields: [resumeId], references: [id])
+  name     String?
+  company  String?
+  position String?
+  phone    String?
+  email    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Certification {
+  id        String   @id @default(cuid())
+  resumeId  String
+  resume    Resume   @relation(fields: [resumeId], references: [id])
+  name     String?
+  time     String?
+  description String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Publication {
+  id        String   @id @default(cuid())
+  resumeId  String
+  resume    Resume   @relation(fields: [resumeId], references: [id])
+  name     String?
+  time     String?
+  description String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Education {
+  id        String   @id @default(cuid())
+  resumeId  String
+  resume    Resume   @relation(fields: [resumeId], references: [id])
+  name     String?
+  time     String?
+  description String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Template {
+  id        Int     @id @default(autoincrement())
+  name      String?
+  fileName  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

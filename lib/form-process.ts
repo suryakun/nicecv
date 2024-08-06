@@ -60,6 +60,7 @@ export default async function FileProcess(filePath: string) : Promise<LLMResult>
     17. **Title**: The title or position of the individual.
     18. **Summary**: Summary of the candidate.
     19. **AI Recommendation**: Recommend how to enhance the CV both in terms of content and structure.
+    20. **Email**: Email of the applicant.
 
     The text from the PDF file will look like this:
 
@@ -68,8 +69,9 @@ export default async function FileProcess(filePath: string) : Promise<LLMResult>
     Experience: 5 years in software development.
     Address: 1234 Elm Street, Springfield, IL
     Phone: (123) 456-7890
-    Skills: JavaScript, Python, React, Node.js
+    Skills: Javascript - 4 years experience, React - 3 years experience, Node.js - 2 years experience
     Links: www.johndoe.com
+    email: john@doe.com
 
     Summary: Experienced software developer with a passion for building innovative web applications.
 
@@ -136,52 +138,55 @@ export default async function FileProcess(filePath: string) : Promise<LLMResult>
     email: z.string().describe('email of applicant').optional().nullable().transform(val => val ?? ''),
     phone: z.string().describe('what is the phone number of the applicant?').optional().nullable().transform(val => val ?? ''),
     address: z.string().describe('where is the applicant address?').optional().nullable().transform(val => val ?? ''),
-    experiences: z.array(z.object({
+    experience: z.array(z.object({
         company: z.string().describe('what is company name?').optional().nullable().transform(val => val ?? ''),
-        time: z.string().describe('work time year start and year end').optional().nullable().transform(val => val ?? ''),
+        workTime: z.string().describe('work time year start and year end').optional().nullable().transform(val => val ?? ''),
         title: z.string().describe('applicant job title').optional().nullable().transform(val => val ?? ''),
         jobDetail: z.string().describe('what did the applicant do and what the job about, don\'t summarize the text').optional().nullable().or(z.literal(''))
     })).describe('Detail of applicant experiences').transform(arr => arr ?? []),
-    skills: z.array(z.string()).describe('applicant skills').optional().nullable().transform(val => val ?? []),
+    skill: z.array(z.object({
+      skillName: z.string().describe('skill title or skill name').optional().nullable().transform(val => val ?? ''),
+      yearOfExperience: z.number().describe('year of experience just put zero if no data').optional().nullable().transform(val => val ?? 0),
+    })).describe('Detail of applicant skills').transform(arr => arr ?? []),
     links: z.array(z.string()).describe('applicant links').optional().nullable(),
-    courses: z.array(z.object({
+    course: z.array(z.object({
         name: z.string().describe('course name').optional().nullable().transform(val => val ?? ''),
         time: z.string().describe('course time year start and year end').optional().nullable().transform(val => val ?? ''),
         description: z.string().describe('course description').optional().nullable().transform(val => val ?? ''),
     })).describe('Detail of applicant courses').transform(arr => arr ?? []),
-    awards: z.array(z.object({
+    award: z.array(z.object({
         name: z.string().describe('award name').optional().nullable().transform(val => val ?? ''),
         time: z.string().describe('award time year').optional().nullable().transform(val => val ?? ''),
         description: z.string().describe('award description').optional().nullable().transform(val => val ?? ''),
     })).describe('Detail of applicant awards').transform(arr => arr ?? []),
-    languages: z.array(z.object({
+    language: z.array(z.object({
         name: z.string().describe('language name').optional().nullable().transform(val => val ?? ''),
         level: z.string().describe('language level').optional().nullable().transform(val => val ?? ''),
     })).describe('Detail of applicant languages').transform(arr => arr ?? []),
     hobbies: z.array(z.string()).describe('applicant hobbies').optional().nullable(),
-    references: z.array(z.object({
+    reference: z.array(z.object({
         name: z.string().describe('reference name').optional().nullable().transform(val => val ?? ''),
         position: z.string().describe('reference position').optional().nullable().transform(val => val ?? ''),
         company: z.string().describe('reference company').optional().nullable().transform(val => val ?? ''),
         phone: z.string().describe('reference phone').optional().nullable().transform(val => val ?? ''),
         email: z.string().describe('reference email').optional().nullable().transform(val => val ?? ''),
     })).describe('Detail of applicant references').transform(arr => arr ?? []),
-    certifications: z.array(z.object({
+    certification: z.array(z.object({
         name: z.string().describe('certification name').optional().nullable().transform(val => val ?? ''),
         time: z.string().describe('certification time year').optional().nullable().transform(val => val ?? ''),
         description: z.string().describe('certification description').optional().nullable().transform(val => val ?? ''),
     })).describe('Detail of applicant certifications').transform(arr => arr ?? []),
-    publications: z.array(z.object({
+    publication: z.array(z.object({
         name: z.string().describe('publication name').optional().nullable().transform(val => val ?? ''),
         time: z.string().describe('publication time year').optional().nullable().transform(val => val ?? ''),
         description: z.string().describe('publication description').optional().nullable().transform(val => val ?? ''),
     })).describe('Detail of applicant publications').transform(arr => arr ?? []),
-    educations: z.array(z.object({
+    education: z.array(z.object({
         name: z.string().describe('education name').optional().nullable().transform(val => val ?? ''),
         time: z.string().describe('education time year start and year end').optional().nullable().transform(val => val ?? ''),
         description: z.string().describe('education description').optional().nullable().transform(val => val ?? ''),
     })).describe('Detail of applicant educations').transform(arr => arr ?? []),
-    ai_recommendation: z.string().describe('Recommendation how to enhance the CV both of content, structure and typo or grammar').optional().nullable(),
+    aiRecommendation: z.string().describe('if the context of this document is resume or CV, Provide recommendation to enhance the CV interm of text or typing').optional().nullable(),
   })
 
   const parser = StructuredOutputParser.fromZodSchema(schema)
