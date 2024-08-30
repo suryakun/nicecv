@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Card, CardContent, CardHeader, CardDescription, CardTitle, CardFooter } from '@/components/ui/card';
 import { UploadButton } from "./upload-button";
+import Link from 'next/link'
 
 export const CVOptions = () => {
   return (
@@ -24,7 +25,9 @@ export const CVOptions = () => {
         </CardHeader>
         <CardContent>
           <CardDescription className="flex justify-center items-center cursor-pointer">
-            <Image src={"/document.svg"} alt="upload" width={100} height={130} />
+            <Link href={`/builder/select`}>
+              <Image src={"/document.svg"} alt="upload" width={100} height={130} />
+            </Link>
           </CardDescription>
         </CardContent>
         <CardFooter className="justify-center">

@@ -22,21 +22,21 @@ export const useResumeForm = (props: ResumeFormProps) => {
       company: z.string(),
       workTime: z.string(),
       title: z.string(),
-      jobDetail: z.string()
+      jobDetail: z.string().nullable().optional()
     })),
     skill: z.array(z.object({
       skillName: z.string(),
-      yearOfExperience: z.number()
+      yearOfExperience: z.number().optional(),
     })),
     course: z.array(z.object({
       name: z.string(),
-      time: z.string(),
-      description: z.string()
+      time: z.string().optional(),
+      description: z.string().optional(),
     })),
     award: z.array(z.object({
       name: z.string(),
-      time: z.string(),
-      description: z.string()
+      time: z.string().optional(),
+      description: z.string().optional(),
     })),
     language: z.array(z.object({
       name: z.string(),
@@ -51,18 +51,18 @@ export const useResumeForm = (props: ResumeFormProps) => {
     })),
     certification: z.array(z.object({
       name: z.string(),
-      time: z.string(),
-      description: z.string()
+      time: z.string().optional(),
+      description: z.string().optional(),
     })),
     publication: z.array(z.object({
       name: z.string(),
-      time: z.string(),
+      time: z.string().optional(),
       description: z.string()
     })),
     education: z.array(z.object({
       name: z.string(),
-      time: z.string(),
-      description: z.string()
+      time: z.string().optional(),
+      description: z.string().optional(),
     }))
   })
 
@@ -88,7 +88,10 @@ export const useResumeForm = (props: ResumeFormProps) => {
       education: [],
       aiRecommendation: '',
     },
-    onSubmit: props.onSubmit
+    onSubmit: props.onSubmit,
+    validateOnChange: false,
+    validateOnBlur: false,
+    validateOnMount: false,
   })
 
   return form;

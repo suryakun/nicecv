@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <main className="flex flex-col relative bg-slate-300">
+        <main className="flex flex-col relative min-h-[100vh] bg-slate-300">
           <NavigationMenu className="flex min-w-full max-h-[100px] bg-white justify-start p-8 ">
             <NavigationMenuList>
               <NavigationMenuItem>

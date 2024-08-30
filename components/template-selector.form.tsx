@@ -18,8 +18,8 @@ export const TemplateSelector = (props: TemplateSelectorProps) => {
       <div className="flex flex-wrap">
         {props.templates.map((template) => (
           <div key={template.id} className="w-1/4 p-4">
-            <Link href={`/builder/edit/${template.id}/resume/${resumeId}`}>
-              <Image src={`/${template.fileName}.jpg`} alt={template.name || 'template'} width={300} height={450} className="h-auto"/>
+            <Link href={`/builder/edit/${template.id}/resume/${resumeId ?? ''}`}>
+              <Image src={`/${template.name}.jpg`} alt={template.name || 'template'} width={300} height={450} className="h-auto"/>
             </Link>
           </div>
         ))}

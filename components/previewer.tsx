@@ -26,16 +26,17 @@ export const Previewer = (props: Props) => {
   }
 
   return (
-    <div className="w-full h-fit flex flex-col justify-start items-center">
-      <iframe ref={iframeRef} className="w-full h-full border-0" 
-        style={{ transform: "scale(0.8)", transformOrigin: "0 0" }}
-        onLoad={() => {
-          const iframe = iframeRef.current;
-          if (iframe) {
-            iframe.style.height = ((iframe.contentWindow?.document.body.scrollHeight ?? 0) + 20) + "px";
-          }
-        }}
-      />
-    </div>
+    <div className="bg-white max-w-[210mm] h-full w-full flex-shrink-0">
+        <iframe ref={iframeRef} className="w-full h-full border-0"
+          style={{ transform: "scale(0.9)", transformOrigin: "0 0" }}
+          onLoad={() => {
+            const iframe = iframeRef.current;
+            if (iframe) {
+              iframe.style.height = ((iframe.contentWindow?.document.body.scrollHeight ?? 0) + 20) + "px";
+              iframe.style.backgroundColor = "white";
+            }
+          }}
+        />
+    </div >
   )
 }

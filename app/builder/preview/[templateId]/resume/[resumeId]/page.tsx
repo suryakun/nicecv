@@ -1,3 +1,4 @@
+import { Previewer } from "@/components/previewer";
 import { Editor } from "@/components/resume-editor";
 import { TemplateDTO } from "@/lib/dto/template.dto";
 import { LLMResult } from "@/lib/llmResult";
@@ -10,7 +11,7 @@ type Props = {
   }
 }
 
-export default async function EditPage(props: Props) {
+export default async function PreviewPage(props: Props) {
 
   const template = await db.template.findFirstOrThrow({
     where: {
@@ -36,8 +37,8 @@ export default async function EditPage(props: Props) {
   })
 
   return (
-    <div className="h-full flex flex-col gap-8 px-4 py-4">
-      <Editor template={template as TemplateDTO} resume={resume as unknown as LLMResult} />
+    <div className="flex justify-center items-center overflow-y-scroll py-4">
+      <Previewer template={template.fileName} data={resume as LLMResult} />
     </div>
   )
 }

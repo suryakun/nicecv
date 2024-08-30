@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroicons/react": "^2.1.5",
     "@langchain/community": "^0.2.19",
     "@langchain/core": "^0.2.17",
     "@langchain/google-genai": "^0.0.21",
@@ -27,6 +28,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "dotenv": "^16.4.5",
+    "dynamic-html-pdf": "^1.0.4",
     "embla-carousel-react": "^8.1.6",
     "formik": "^2.4.6",
     "google-auth-library": "^9.11.0",
@@ -39,6 +41,8 @@
     "next": "14.2.5",
     "pdf-parse": "^1.1.1",
     "punycode": "^2.3.1",
+    "puppeteer": "^23.1.1",
+    "puppeteer-core": "^23.1.1",
     "react": "^18",
     "react-dom": "^18",
     "supabase": "link:langchain/vectorstores/supabase",
