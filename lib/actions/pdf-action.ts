@@ -40,18 +40,11 @@ export const generatePDF = async (templateId: number, resumeId: string) => {
     fs.mkdirSync(pdfDir, { recursive: true });
   }
 
-  console.log(pdfPath);
   const options: PDFOptions = {
     scale: 0.9,
     format: 'A4' as PaperFormat,
     landscape: false,
-    headerTemplate: "<p></p>",
-    footerTemplate: "<p></p>",
-    displayHeaderFooter: false,
-    margin: {
-        top: "10px",
-        bottom: "30px"
-    },
+    margin: { top: '1cm', right: '1cm', bottom: '1cm', left: '1cm' },
     printBackground: true,
     path: pdfPath,
   }
@@ -62,10 +55,14 @@ export const generatePDF = async (templateId: number, resumeId: string) => {
 	});
 
 	var page = await browser.newPage();
+
+  await page.setViewport({
+    width: 794,
+    height: 1123,
+    deviceScaleFactor: 2, // Increase for better quality
+  });
 	
-	await page.goto(`data:text/html;charset=UTF-8,${html}`, {
-		waitUntil: 'networkidle2'
-	});
+  await page.setContent(html, { waitUntil: 'networkidle0' });
 
 	await page.pdf(options);
 	await browser.close();
