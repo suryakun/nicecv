@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import { useResumeForm } from "@/hooks/form/use-resume-form"
-import { LLMResult } from "@/lib/llmResult"
+import { useResumeForm } from "@/hooks/form/use-resume-form";
+import { LLMResult } from "@/lib/llmResult";
 import {
   Accordion,
   AccordionContent,
@@ -14,7 +14,7 @@ import { Textarea } from "./ui/textarea";
 import { FormikProvider } from "formik";
 import { Button } from "./ui/button";
 import { TemplateDTO } from "@/lib/dto/template.dto";
-import { Previewer } from "@/components/previewer"
+import { Previewer } from "@/components/previewer";
 import { updateResume } from "@/lib/actions/resume-action";
 import { generatePDF } from "@/lib/actions/pdf-action";
 import { ExperienceInput } from "./experience-input";
@@ -26,39 +26,54 @@ import { PublicationInput } from "./publication-input";
 import { useEffect, useState } from "react";
 
 type Props = {
-  template: TemplateDTO,
-  resume: LLMResult | null,
-}
+  template: TemplateDTO;
+  resume: LLMResult | null;
+};
 
 export const Editor = (props: Props) => {
-  const [openState, setOpenState] = useState('personal')
+  const [openState, setOpenState] = useState("personal");
   const form = useResumeForm({
     resume: props.resume,
     onSubmit: async (values: LLMResult) => {
-      console.log(form.errors)
-      values.award = values.award.filter(award => award.name !== "")
-      values.course = values.course.filter(course => course.name !== "")
-      values.education = values.education.filter(education => education.name !== "")
-      values.experience = values.experience.filter(experience => experience.company !== "")
-      values.publication = values.publication.filter(publication => publication.name !== "")
-      values.skill = values.skill.filter(skill => skill.skillName !== "")
-      await updateResume(values, props.template.id?.toString())
-      await generatePDF(props.template.id, values?.id || '')
-    }
-  })
+      console.log(form.errors);
+      values.award = values.award.filter((award) => award.name !== "");
+      values.course = values.course.filter((course) => course.name !== "");
+      values.education = values.education.filter(
+        (education) => education.name !== "",
+      );
+      values.experience = values.experience.filter(
+        (experience) => experience.company !== "",
+      );
+      values.publication = values.publication.filter(
+        (publication) => publication.name !== "",
+      );
+      values.skill = values.skill.filter((skill) => skill.skillName !== "");
+      await updateResume(values, props.template.id?.toString());
+      await generatePDF(props.template.id, values?.id || "");
+    },
+  });
 
   useEffect(() => {
-    console.log(form.errors)
+    console.log(form.errors);
     if (form.errors) {
-      const keys = Object.keys(form.errors)
-      const panels = ['personal', 'summary', 'experience', 'skill', 'education', 'course', 'award', 'publication']
+      const keys = Object.keys(form.errors);
+      const panels = [
+        "personal",
+        "summary",
+        "experience",
+        "skill",
+        "education",
+        "course",
+        "award",
+        "publication",
+      ];
       if (panels.includes(keys[0])) {
-        setOpenState(keys[0])
+        setOpenState(keys[0]);
       } else {
-        setOpenState('personal')
+        setOpenState("personal");
       }
     }
-  }, [form.errors])
+  }, [form.errors]);
 
   return (
     <FormikProvider value={form}>
@@ -71,17 +86,52 @@ export const Editor = (props: Props) => {
                 <AccordionItem value="personal">
                   <AccordionTrigger>Personal Information</AccordionTrigger>
                   <AccordionContent className="flex flex-col gap-4 pl-4">
-                    <Input type="text" placeholder="Job title" name="title" onChange={form.handleChange} value={form.values.title} />
-                    <Input type="text" placeholder="Name" name="name" onChange={form.handleChange} value={form.values.name} />
-                    <Input type="text" placeholder="Phone" name="phone" onChange={form.handleChange} value={form.values.phone} />
-                    <Input type="text" placeholder="Email" name="email" onChange={form.handleChange} value={form.values.email} />
-                    <Input type="text" placeholder="Address" name="address" onChange={form.handleChange} value={form.values.address} />
+                    <Input
+                      type="text"
+                      placeholder="Job title"
+                      name="title"
+                      onChange={form.handleChange}
+                      value={form.values.title}
+                    />
+                    <Input
+                      type="text"
+                      placeholder="Name"
+                      name="name"
+                      onChange={form.handleChange}
+                      value={form.values.name}
+                    />
+                    <Input
+                      type="text"
+                      placeholder="Phone"
+                      name="phone"
+                      onChange={form.handleChange}
+                      value={form.values.phone}
+                    />
+                    <Input
+                      type="text"
+                      placeholder="Email"
+                      name="email"
+                      onChange={form.handleChange}
+                      value={form.values.email}
+                    />
+                    <Input
+                      type="text"
+                      placeholder="Address"
+                      name="address"
+                      onChange={form.handleChange}
+                      value={form.values.address}
+                    />
                   </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="summary">
                   <AccordionTrigger>Summary</AccordionTrigger>
                   <AccordionContent className="pl-4">
-                    <Textarea placeholder="Type your summary here" name="summary" onChange={form.handleChange} value={form.values.summary} />
+                    <Textarea
+                      placeholder="Type your summary here"
+                      name="summary"
+                      onChange={form.handleChange}
+                      value={form.values.summary}
+                    />
                   </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="experience">
@@ -123,7 +173,9 @@ export const Editor = (props: Props) => {
               </Accordion>
             </CardContent>
             <CardFooter className="flex justify-end">
-              <Button type="button" onClick={form.submitForm}>Save and Preview</Button>
+              <Button type="button" onClick={form.submitForm}>
+                Save and Preview
+              </Button>
             </CardFooter>
           </Card>
           <div className="flex flex-grow justify-center items-start h-[calc(100vh-140px)] overflow-y-scroll custom-scrollbar">
@@ -132,5 +184,5 @@ export const Editor = (props: Props) => {
         </form>
       </div>
     </FormikProvider>
-  )
-}
+  );
+};
