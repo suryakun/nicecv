@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from 'next/link';
 import {
   Upload,
   CheckCircle,
@@ -6,44 +6,44 @@ import {
   FileText,
   Briefcase,
   GraduationCap,
-} from "lucide-react";
+} from 'lucide-react';
 
 const steps = [
   {
     icon: <Upload className="h-8 w-8" />,
-    title: "Upload Resume",
-    description: "Import your LinkedIn resume in PDF format.",
+    title: 'Upload Resume',
+    description: 'Import your LinkedIn resume in PDF format.',
   },
   {
     icon: <CheckCircle className="h-8 w-8" />,
-    title: "Choose Template",
-    description: "Select from our professionally designed templates.",
+    title: 'Choose Template',
+    description: 'Select from our professionally designed templates.',
   },
   {
     icon: <Star className="h-8 w-8" />,
-    title: "Get Your New Resume",
-    description: "Download your beautifully redesigned resume.",
+    title: 'Get Your New Resume',
+    description: 'Download your beautifully redesigned resume.',
   },
 ];
 
 const testimonials = [
   {
-    name: "Alex Johnson",
-    role: "Software Engineer",
+    name: 'Alex Johnson',
+    role: 'Software Engineer',
     quote:
-      "This app helped me land my dream job! The redesigned resume really stood out.",
+      'This app helped me land my dream job! The redesigned resume really stood out.',
   },
   {
-    name: "Sarah Lee",
-    role: "Marketing Specialist",
+    name: 'Sarah Lee',
+    role: 'Marketing Specialist',
     quote:
-      "I was amazed at how quick and easy it was to transform my resume. Highly recommended!",
+      'I was amazed at how quick and easy it was to transform my resume. Highly recommended!',
   },
   {
-    name: "Michael Brown",
-    role: "Project Manager",
+    name: 'Michael Brown',
+    role: 'Project Manager',
     quote:
-      "The templates are sleek and professional. My application success rate has significantly improved.",
+      'The templates are sleek and professional. My application success rate has significantly improved.',
   },
 ];
 
@@ -158,7 +158,6 @@ export default function Page() {
 
       {/* Testimonials */}
       <section className="bg-gray-100 py-16 relative overflow-hidden">
-        <BackgroundIcons />
         <div className="container mx-auto px-4 relative z-10">
           <h2 className="text-3xl font-bold text-center mb-12">
             What Our Users Say

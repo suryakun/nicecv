@@ -1,6 +1,6 @@
 "use client"
 
-import { retrievePDF } from "@/app/builder/actions";
+import { retrievePDF } from "@/app/(public)/builder/actions";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
@@ -26,15 +26,15 @@ export const UploadButton = () => {
 
   return (
     <>
-      { loading && isBrowser && createPortal(loadingSpinner, document.body) }
+      {loading && isBrowser && createPortal(loadingSpinner, document.body)}
       <form action={retrievePDF}>
-        <input 
+        <input
           name="file"
           disabled={loading}
-          type="file" 
-          className="invisible w-full input_file" 
-          accept="application/pdf" 
-          max={"1MB"} 
+          type="file"
+          className="invisible w-full input_file"
+          accept="application/pdf"
+          max={"1MB"}
           onChange={onChange}
         />
       </form>
