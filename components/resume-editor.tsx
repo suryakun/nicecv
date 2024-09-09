@@ -174,7 +174,7 @@ export const Editor = (props: Props) => {
                 </Accordion>
               </CardContent>
             </Card>
-            <div className="flex flex-grow justify-end items-start h-[calc(100vh-210px)] overflow-y-scroll custom-scrollbar">
+            <div className="flex flex-grow justify-center items-start h-[calc(100vh-210px)] overflow-y-scroll custom-scrollbar">
               <Previewer
                 template={props.template.fileName}
                 data={form.values}
