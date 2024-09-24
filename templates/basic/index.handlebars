@@ -1,0 +1,83 @@
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <title>{{name}} - Resume</title>
+    <link
+      href='https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap'
+      rel='stylesheet'
+    />
+    <style>
+      body { font-family: 'Roboto', Arial, sans-serif; line-height: 1.6; color:
+      #333; max-width: 800px; margin: 0 auto; padding: 20px; } h1, h2, h3 {
+      color: #2c3e50; } h1 { border-bottom: 2px solid #3498db; padding-bottom:
+      10px; } h2 { border-bottom: 1px solid #bdc3c7; padding-bottom: 5px; }
+      .contact-info { display: flex; justify-content: space-between; flex-wrap:
+      wrap; } .contact-info p { margin: 5px 0; } .experience-item,
+      .education-item { margin-bottom: 20px; } .skills-list { display: flex;
+      flex-wrap: wrap; gap: 10px; } .skill-item { background-color: #ecf0f1;
+      padding: 5px 10px; border-radius: 5px; } .references { display: flex;
+      justify-content: space-between; flex-wrap: wrap; } .reference-item {
+      width: 48%; margin-bottom: 10px; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>{{name}}</h1>
+      <p>{{title}}</p>
+      <div class='contact-info'>
+        <p>{{address}}</p>
+        <p>{{phone}}</p>
+        <p>{{email}}</p>
+      </div>
+    </header>
+
+    <section>
+      <h2>Summary</h2>
+      <p>{{summary}}</p>
+    </section>
+
+    <section>
+      <h2>Experience</h2>
+      {{#each experience}}
+        <div class='experience-item'>
+          <h3>{{this.company}}</h3>
+          <p><strong>{{this.title}}</strong> | {{this.workTime}}</p>
+          <p>{{this.jobDetail}}</p>
+        </div>
+      {{/each}}
+    </section>
+
+    <section>
+      <h2>Education</h2>
+      {{#each education}}
+        <div class='education-item'>
+          <h3>{{this.name}}</h3>
+          <p>{{this.time}}</p>
+          <p>{{this.description}}</p>
+        </div>
+      {{/each}}
+    </section>
+
+    <section>
+      <h2>Skills</h2>
+      <div class='skills-list'>
+        {{#each skill}}
+          <span class='skill-item'>{{this.skillName}}</span>
+        {{/each}}
+      </div>
+    </section>
+
+    <section>
+      <h2>References</h2>
+      <div class='references'>
+        {{#each reference}}
+          <div class='reference-item'>
+            <h3>{{this.name}}</h3>
+            <p>{{this.position}}</p>
+          </div>
+        {{/each}}
+      </div>
+    </section>
+  </body>
+</html>

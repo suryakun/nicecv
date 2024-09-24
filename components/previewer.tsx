@@ -1,4 +1,5 @@
 'use client';
+
 import { LLMResult } from '@/lib/llmResult';
 import * as Handlebars from 'handlebars';
 import { useEffect, useMemo, useRef } from 'react';
@@ -10,39 +11,46 @@ type Props = {
 
 export const Previewer = (props: Props) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const html = useMemo(() => {
+  const renderedTemplate = useMemo(() => {
     const template = Handlebars.compile(props.template);
     return template(props.data);
   }, [props]);
 
   useEffect(() => {
     if (iframeRef.current) {
-      iframeRef.current.srcdoc = html;
+      const blob = new Blob([renderedTemplate], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      iframeRef.current.src = url;
+
+      return () => {
+        URL.revokeObjectURL(url);
+      };
     }
-  }, [html]);
+  }, [renderedTemplate]);
 
   if (!props.template) {
     return null;
   }
 
   return (
-    <div className="max-w-[210mm] h-fit w-full">
-      <iframe
-        title="previewer"
-        ref={iframeRef}
-        className="w-full h-full min-h-[calc(100vh-233.33px)]  border-0"
-        style={{ transform: 'scale(0.9)', transformOrigin: '0 0' }}
-        onLoad={() => {
-          const iframe = iframeRef.current;
-          if (iframe) {
-            iframe.style.height =
-              (iframe.contentWindow?.document.body.scrollHeight ?? 0) +
-              20 +
-              'px';
-            iframe.style.backgroundColor = 'white';
-          }
-        }}
-      />
+    <div className="flex justify-center items-start">
+      <div className="transform scale-[0.8]">
+        <iframe
+          title="previewer"
+          ref={iframeRef}
+          className="w-[210mm] h-full min-h-[calc(100vh-233.33px)]  border-0"
+          onLoad={() => {
+            const iframe = iframeRef.current;
+            if (iframe) {
+              iframe.style.height =
+                (iframe.contentWindow?.document.body.scrollHeight ?? 0) +
+                20 +
+                'px';
+              iframe.style.backgroundColor = 'white';
+            }
+          }}
+        />
+      </div>
     </div>
   );
 };

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 100">
+  <defs>
+    <style type="text/css">
+      @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&amp;display=swap');
+    </style>
+  </defs>
+  
+  <!-- Checkmark icon -->
+  <path d="M40 50 l10 10 l20 -20" stroke="#2ECC71" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  
+  <!-- Circle around checkmark -->
+  <circle cx="55" cy="50" r="30" stroke="#2ECC71" stroke-width="3" fill="none" />
+  
+  <!-- Text -->
+  <text x="100" y="45" font-family="'Montserrat', sans-serif" font-size="36" font-weight="700" fill="#FFFF">NiceCV</text>
+  <text x="100" y="80" font-family="'Montserrat', sans-serif" font-size="36" font-weight="700" fill="#2ECC71">.ai</text>
+</svg>

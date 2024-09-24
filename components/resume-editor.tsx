@@ -9,9 +9,6 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { Card, CardContent, CardHeader } from './ui/card';
-import { Input } from '@/components/ui/input';
-import { Textarea } from './ui/textarea';
-import { FormikProvider } from 'formik';
 import { Button } from './ui/button';
 import { TemplateDTO } from '@/lib/dto/template.dto';
 import { Previewer } from '@/components/previewer';
@@ -23,7 +20,11 @@ import { EducationInput } from './education-input';
 import { CourseInput } from './course-input';
 import { AwardInput } from './award-input';
 import { PublicationInput } from './publication-input';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { Form } from './ui/form';
+import { CustomFormField } from './custom-form-field';
+import { CustomFormTextarea } from './custom-form-textarea';
+import { FieldErrors, FieldValues } from 'react-hook-form';
 
 type Props = {
   template: TemplateDTO;
@@ -32,162 +33,151 @@ type Props = {
 
 export const Editor = (props: Props) => {
   const [openState, setOpenState] = useState('personal');
-  const form = useResumeForm({
-    resume: props.resume,
-    onSubmit: async (values: LLMResult) => {
-      console.log(form.errors);
-      values.award = values.award.filter((award) => award.name !== '');
-      values.course = values.course.filter((course) => course.name !== '');
-      values.education = values.education.filter(
-        (education) => education.name !== '',
-      );
-      values.experience = values.experience.filter(
-        (experience) => experience.company !== '',
-      );
-      values.publication = values.publication.filter(
-        (publication) => publication.name !== '',
-      );
-      values.skill = values.skill.filter((skill) => skill.skillName !== '');
-      await updateResume(values, props.template.id?.toString());
-      await generatePDF(props.template.id, values?.id || '');
-    },
-  });
+  const form = useResumeForm({ resume: props.resume });
 
-  useEffect(() => {
-    console.log(form.errors);
-    if (form.errors) {
-      const keys = Object.keys(form.errors);
-      const panels = [
-        'personal',
-        'summary',
-        'experience',
-        'skill',
-        'education',
-        'course',
-        'award',
-        'publication',
-      ];
-      if (panels.includes(keys[0])) {
-        setOpenState(keys[0]);
-      } else {
-        setOpenState('personal');
-      }
-    }
-  }, [form.errors]);
+  const onSubmit = async (data: LLMResult) => {
+    await updateResume(data, props.template.id.toString());
+    await generatePDF(props.template.id, props.resume?.id?.toString() || '');
+  };
+
+  const onError = (errors: FieldErrors<FieldValues>) => {
+    const keys = Object.keys(errors);
+    setOpenState(keys[0]);
+  };
 
   return (
-    <FormikProvider value={form}>
-      <form onSubmit={form.handleSubmit} className="flex flex-col gap-4">
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit, onError)}
+        className="flex flex-col"
+      >
         <div className="flex gap-4 h-full">
-          <div className="w-full justify-between flex gap-10">
-            <Card className="w-full max-w-[38vw] h-[calc(100vh-210px)] overflow-y-scroll custom-scrollbar">
+          <div className="w-full justify-between flex">
+            <Card className="w-full max-w-[50%] h-[calc(100vh-210px)] overflow-y-scroll custom-scrollbar">
               <CardHeader>Create resume data here</CardHeader>
               <CardContent>
-                <Accordion type="single" collapsible defaultValue={openState}>
+                <Accordion
+                  type="single"
+                  collapsible
+                  defaultValue={'personal'}
+                  value={openState}
+                  onValueChange={setOpenState}
+                >
                   <AccordionItem value="personal">
-                    <AccordionTrigger>1. Personal Information</AccordionTrigger>
-                    <AccordionContent className="flex flex-col gap-4 pl-4">
-                      <Input
-                        type="text"
-                        placeholder="Job title"
+                    <AccordionTrigger className="font-md bg-primary text-white p-2">
+                      1. Personal Information
+                    </AccordionTrigger>
+                    <AccordionContent className="flex flex-col gap-2 py-4 px-4">
+                      <CustomFormField
+                        control={form.control}
                         name="title"
-                        onChange={form.handleChange}
-                        value={form.values.title}
+                        label="Title"
+                        placeholder="Type here..."
                       />
-                      <Input
-                        type="text"
-                        placeholder="Name"
+                      <CustomFormField
+                        control={form.control}
                         name="name"
-                        onChange={form.handleChange}
-                        value={form.values.name}
+                        label="Name"
+                        placeholder="Type here..."
                       />
-                      <Input
-                        type="text"
-                        placeholder="Phone"
+                      <CustomFormField
+                        control={form.control}
                         name="phone"
-                        onChange={form.handleChange}
-                        value={form.values.phone}
+                        label="Phone"
+                        placeholder="Type here..."
                       />
-                      <Input
-                        type="text"
-                        placeholder="Email"
+                      <CustomFormField
+                        control={form.control}
                         name="email"
-                        onChange={form.handleChange}
-                        value={form.values.email}
+                        label="Email"
+                        placeholder="Type here..."
                       />
-                      <Input
-                        type="text"
-                        placeholder="Address"
+                      <CustomFormField
+                        control={form.control}
                         name="address"
-                        onChange={form.handleChange}
-                        value={form.values.address}
+                        label="Address"
+                        placeholder="Type here..."
                       />
                     </AccordionContent>
                   </AccordionItem>
                   <AccordionItem value="summary">
-                    <AccordionTrigger>2. Summary</AccordionTrigger>
-                    <AccordionContent className="pl-4">
-                      <Textarea
+                    <AccordionTrigger className="font-md bg-primary text-white p-2">
+                      2. Summary
+                    </AccordionTrigger>
+                    <AccordionContent className="p-4">
+                      <CustomFormTextarea
+                        control={form.control}
                         placeholder="Type your summary here"
                         name="summary"
-                        onChange={form.handleChange}
-                        value={form.values.summary}
                       />
                     </AccordionContent>
                   </AccordionItem>
                   <AccordionItem value="experience">
-                    <AccordionTrigger>3. Experience</AccordionTrigger>
-                    <AccordionContent className="pl-4">
-                      <ExperienceInput form={form} />
+                    <AccordionTrigger className="font-md bg-primary text-white p-2">
+                      3. Experience
+                    </AccordionTrigger>
+                    <AccordionContent className="p-4">
+                      <ExperienceInput
+                        control={form.control}
+                        register={form.register}
+                      />
                     </AccordionContent>
                   </AccordionItem>
                   <AccordionItem value="skill">
-                    <AccordionTrigger>4. Skills</AccordionTrigger>
-                    <AccordionContent className="pl-4">
-                      <SkillInput form={form} />
+                    <AccordionTrigger className="font-md bg-primary text-white p-2">
+                      4. Skills
+                    </AccordionTrigger>
+                    <AccordionContent className="p-4">
+                      <SkillInput control={form.control} />
                     </AccordionContent>
                   </AccordionItem>
                   <AccordionItem value="education">
-                    <AccordionTrigger>5. Educations</AccordionTrigger>
-                    <AccordionContent className="pl-4">
-                      <EducationInput form={form} />
+                    <AccordionTrigger className="font-md bg-primary text-white p-2">
+                      5. Educations
+                    </AccordionTrigger>
+                    <AccordionContent className="p-4">
+                      <EducationInput control={form.control} />
                     </AccordionContent>
                   </AccordionItem>
                   <AccordionItem value="course">
-                    <AccordionTrigger>6. Courses</AccordionTrigger>
-                    <AccordionContent className="pl-4">
-                      <CourseInput form={form} />
+                    <AccordionTrigger className="font-md bg-primary text-white p-2">
+                      6. Courses
+                    </AccordionTrigger>
+                    <AccordionContent className="p-4">
+                      <CourseInput control={form.control} />
                     </AccordionContent>
                   </AccordionItem>
                   <AccordionItem value="award">
-                    <AccordionTrigger>7. Award</AccordionTrigger>
-                    <AccordionContent className="pl-4">
-                      <AwardInput form={form} />
+                    <AccordionTrigger className="font-md bg-primary text-white p-2">
+                      7. Award
+                    </AccordionTrigger>
+                    <AccordionContent className="p-4">
+                      <AwardInput control={form.control} />
                     </AccordionContent>
                   </AccordionItem>
                   <AccordionItem value="publication">
-                    <AccordionTrigger>8. Publication</AccordionTrigger>
-                    <AccordionContent className="pl-4">
-                      <PublicationInput form={form} />
+                    <AccordionTrigger className="font-md bg-primary text-white p-2">
+                      8. Publication
+                    </AccordionTrigger>
+                    <AccordionContent className="p-4">
+                      <PublicationInput control={form.control} />
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion>
               </CardContent>
             </Card>
-            <div className="flex flex-grow justify-center items-start h-[calc(100vh-210px)] overflow-y-scroll custom-scrollbar">
+            <div className="flex flex-grow justify-center items-start h-[calc(100vh-210px)] overflow-y-scroll custom-scrollbar bg-slate-300">
               <Previewer
                 template={props.template.fileName}
-                data={form.values}
+                data={form.watch()}
               />
             </div>
           </div>
         </div>
-        <section className="flex justify-end">
-          <Button type="button" onClick={form.submitForm}>
-            Save and Preview
-          </Button>
+        <section className="flex justify-end pt-4">
+          <Button type="submit">Save and Preview</Button>
         </section>
       </form>
-    </FormikProvider>
+    </Form>
   );
 };

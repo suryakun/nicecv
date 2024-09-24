@@ -1,12 +1,11 @@
-'use server'
+'use server';
 
-import db from "@/prisma/db"
-import { LLMResult } from "../llmResult"
-import { redirect } from "next/navigation";
+import db from '@/prisma/db';
+import { LLMResult } from '../llmResult';
+import { redirect } from 'next/navigation';
 
 export const updateResume = async (values: LLMResult, templateId?: string) => {
-
-  await db.$transaction(async tx => {
+  await db.$transaction(async (tx) => {
     await tx.resume.update({
       where: {
         id: values.id, // Assuming `values` contains the `id` of the resume to update
@@ -18,8 +17,8 @@ export const updateResume = async (values: LLMResult, templateId?: string) => {
         email: values.email,
         address: values.address,
         summary: values.summary,
-      }
-    })
+      },
+    });
 
     for (const experience of values.experience) {
       await tx.experience.upsert({
@@ -42,8 +41,8 @@ export const updateResume = async (values: LLMResult, templateId?: string) => {
           workTime: experience.workTime,
           title: experience.title,
           jobDetail: experience.jobDetail,
-        }
-      })
+        },
+      });
     }
 
     for (const skill of values.skill) {
@@ -63,8 +62,8 @@ export const updateResume = async (values: LLMResult, templateId?: string) => {
         update: {
           skillName: skill.skillName,
           yearOfExperience: skill.yearOfExperience,
-        }
-      })
+        },
+      });
     }
 
     for (const education of values.education) {
@@ -86,8 +85,8 @@ export const updateResume = async (values: LLMResult, templateId?: string) => {
           name: education.name,
           time: education.time,
           description: education.description,
-        }
-      })
+        },
+      });
     }
 
     for (const course of values.course) {
@@ -109,8 +108,8 @@ export const updateResume = async (values: LLMResult, templateId?: string) => {
           name: course.name,
           time: course.time,
           description: course.description,
-        }
-      })
+        },
+      });
     }
 
     for (const award of values.award) {
@@ -132,8 +131,8 @@ export const updateResume = async (values: LLMResult, templateId?: string) => {
           name: award.name,
           time: award.time,
           description: award.description,
-        }
-      })
+        },
+      });
     }
 
     for (const language of values.language) {
@@ -153,8 +152,8 @@ export const updateResume = async (values: LLMResult, templateId?: string) => {
         update: {
           name: language.name,
           level: language.level,
-        }
-      })
+        },
+      });
     }
 
     for (const reference of values.reference) {
@@ -180,8 +179,8 @@ export const updateResume = async (values: LLMResult, templateId?: string) => {
           company: reference.company,
           phone: reference.phone,
           email: reference.email,
-        }
-      })
+        },
+      });
     }
 
     for (const certification of values.certification) {
@@ -203,18 +202,16 @@ export const updateResume = async (values: LLMResult, templateId?: string) => {
           name: certification.name,
           time: certification.time,
           description: certification.description,
-        }
-      })
+        },
+      });
     }
-
   });
 
-  redirect(`/builder/preview/${templateId}/resume/${values.id}`)
+  redirect(`/builder/preview/${templateId}/resume/${values.id}`);
+};
 
-}
-
-export const createNewResume = async (values: LLMResult, templateId?: string) => {
-  await db.$transaction(async tx => {
+export const createNewResume = async (values: LLMResult) => {
+  await db.$transaction(async (tx) => {
     const resume = await tx.resume.create({
       data: {
         title: values.title,
@@ -223,8 +220,8 @@ export const createNewResume = async (values: LLMResult, templateId?: string) =>
         email: values.email,
         address: values.address,
         summary: values.summary,
-      }
-    })
+      },
+    });
 
     for (const experience of values.experience) {
       await tx.experience.create({
@@ -238,8 +235,8 @@ export const createNewResume = async (values: LLMResult, templateId?: string) =>
               id: resume.id,
             },
           },
-        }
-      })
+        },
+      });
     }
 
     for (const skill of values.skill) {
@@ -252,8 +249,8 @@ export const createNewResume = async (values: LLMResult, templateId?: string) =>
               id: resume.id,
             },
           },
-        }
-      })
+        },
+      });
     }
 
     for (const education of values.education) {
@@ -267,8 +264,8 @@ export const createNewResume = async (values: LLMResult, templateId?: string) =>
               id: resume.id,
             },
           },
-        }
-      })
+        },
+      });
     }
 
     for (const course of values.course) {
@@ -282,8 +279,8 @@ export const createNewResume = async (values: LLMResult, templateId?: string) =>
               id: resume.id,
             },
           },
-        }
-      })
+        },
+      });
     }
 
     for (const award of values.award) {
@@ -297,8 +294,8 @@ export const createNewResume = async (values: LLMResult, templateId?: string) =>
               id: resume.id,
             },
           },
-        }
-      })
+        },
+      });
     }
 
     for (const language of values.language) {
@@ -311,8 +308,8 @@ export const createNewResume = async (values: LLMResult, templateId?: string) =>
               id: resume.id,
             },
           },
-        }
-      })
+        },
+      });
     }
 
     for (const reference of values.reference) {
@@ -328,8 +325,8 @@ export const createNewResume = async (values: LLMResult, templateId?: string) =>
               id: resume.id,
             },
           },
-        }
-      })
+        },
+      });
     }
 
     for (const certification of values.certification) {
@@ -343,9 +340,8 @@ export const createNewResume = async (values: LLMResult, templateId?: string) =>
               id: resume.id,
             },
           },
-        }
-      })
+        },
+      });
     }
-  })
-
-}
+  });
+};

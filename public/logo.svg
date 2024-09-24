@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 100">
+  <defs>
+    <style type="text/css">
+      @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&amp;display=swap');
+    </style>
+  </defs>
+  
+  <!-- Document icon -->
+  <path d="M40 20 h40 v60 h-40 z" fill="#4A90E2" />
+  <path d="M50 30 h20 v5 h-20 z" fill="#FFFFFF" />
+  <path d="M50 40 h20 v5 h-20 z" fill="#FFFFFF" />
+  <path d="M50 50 h20 v5 h-20 z" fill="#FFFFFF" />
+  
+  <!-- Text -->
+  <text x="100" y="65" font-family="'Cormorant Garamond', serif" font-size="40" font-weight="600" fill="#333333">NiceCV.ai</text>
+</svg>

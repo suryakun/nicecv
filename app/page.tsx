@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Upload, CheckCircle, Star } from 'lucide-react';
 import { BackgroundIcons } from '@/components/background-icons';
+import Image from 'next/image';
 
 const steps = [
   {
@@ -62,31 +63,41 @@ export default function Page() {
       `}</style>
 
       {/* Hero Section with Background Image and Animated SVG Icons */}
-      <section className="relative bg-indigo-700 text-white py-20 overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center z-0"
-          style={{
-            backgroundImage: "url('/api/placeholder/1920/1080')",
-            opacity: 0.2,
-          }}
-        ></div>
-        <BackgroundIcons />
-        <div className="container mx-auto px-4 relative z-10">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Transform Your Resume in Minutes
-          </h1>
-          <p className="text-xl mb-8">
-            Upload your LinkedIn resume, choose a template, and get a
-            professionally designed CV instantly.
-          </p>
-          <Link
-            href="/builder"
-            className="bg-white text-indigo-700 font-bold py-2 px-6 rounded-full hover:bg-indigo-100 transition duration-300"
-          >
-            Get Started
-          </Link>
-        </div>
-      </section>
+      <div className="flex  bg-indigo-700 text-white overflow-hidden justify-between">
+        <section className="relative pl-20 py-20">
+          <div
+            className="absolute inset-0 bg-cover bg-center z-0"
+            style={{
+              backgroundImage: "url('/api/placeholder/1920/1080')",
+              opacity: 0.2,
+            }}
+          ></div>
+          <BackgroundIcons />
+          <div className="container mx-auto px-4 relative z-10">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              Transform Your Resume in Minutes
+            </h1>
+            <p className="text-xl mb-8">
+              Upload your LinkedIn resume, choose a template, and get a
+              professionally designed CV instantly.
+            </p>
+            <Link
+              href="/builder"
+              className="bg-white text-indigo-700 font-bold py-2 px-6 rounded-full hover:bg-indigo-100 transition duration-300"
+            >
+              Get Started
+            </Link>
+          </div>
+        </section>
+        <Image
+          src="/newlogo.svg"
+          alt="Hero Image"
+          width={400}
+          height={200}
+          className="animate-float"
+          priority
+        />
+      </div>
 
       {/* App Explanation */}
       <section className="py-16 relative overflow-hidden">

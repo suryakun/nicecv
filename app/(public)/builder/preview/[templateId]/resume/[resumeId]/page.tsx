@@ -1,23 +1,20 @@
-import { Previewer } from "@/components/previewer";
-import { Editor } from "@/components/resume-editor";
-import { TemplateDTO } from "@/lib/dto/template.dto";
-import { LLMResult } from "@/lib/llmResult";
-import db from "@/prisma/db"
+import { Previewer } from '@/components/previewer';
+import { LLMResult } from '@/lib/llmResult';
+import db from '@/prisma/db';
 
 type Props = {
   params: {
-    templateId: string,
-    resumeId: string
-  }
-}
+    templateId: string;
+    resumeId: string;
+  };
+};
 
 export default async function PreviewPage(props: Props) {
-
   const template = await db.template.findFirstOrThrow({
     where: {
-      id: parseInt(props.params.templateId)
-    }
-  })
+      id: parseInt(props.params.templateId),
+    },
+  });
 
   const resume = await db.resume.findUnique({
     where: {
@@ -33,12 +30,15 @@ export default async function PreviewPage(props: Props) {
       publication: true,
       course: true,
       language: true,
-    }
-  })
+    },
+  });
 
   return (
-    <div className="flex justify-center items-center overflow-y-scroll py-4">
-      <Previewer template={template.fileName} data={resume as LLMResult} />
+    <div className="flex justify-center items-center overflow-y-scroll py-4 bg-slate-300">
+      <Previewer
+        template={template.fileName}
+        data={resume as unknown as LLMResult}
+      />
     </div>
-  )
+  );
 }

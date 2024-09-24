@@ -4,49 +4,49 @@ export type LLMResult = {
   phone: string;
   email: string;
   experience: {
-    id: string | undefined;
+    id?: string;
     company: string;
-    workTime: string;
+    workTime?: string;
     title: string;
-    jobDetail: string;
+    jobDetail?: string;
   }[];
   skill: {
-    id: string | undefined;
+    id?: string;
     skillName: string;
-    yearOfExperience: number;
+    yearOfExperience?: number;
   }[];
-  links: string[];
+  links?: string[];
   course: {
-    id: string | undefined;
+    id?: string;
     name: string;
     time: string;
-    description: string;
+    description?: string;
   }[];
   award: {
-    id: string;
+    id?: string;
     name: string;
     time: string;
-    description: string;
+    description?: string;
   }[];
   language: {
-    id: string;
+    id?: string;
     name: string;
-    level: string;
+    level?: string;
   }[];
   hobbies: string[];
   reference: {
-    id: string;
+    id?: string;
     name: string;
     position: string;
-    compstring: string;
-    phone: string;
-    email: string;
+    company: string;
+    phone?: string;
+    email?: string;
   }[];
   certification: {
-    id: string;
+    id?: string;
     name: string;
     time: string;
-    description: string;
+    description?: string;
   }[];
   publication: {
     name: string;
@@ -54,13 +54,13 @@ export type LLMResult = {
     description: string;
   }[];
   education: {
-    id: string | undefined;
+    id?: string;
     name: string;
     time: string;
-    description: string;
+    description?: string;
   }[];
   summary: string;
   title: string;
   address: string;
-  aiRecommendation: string;
+  aiRecommendation?: string;
 };

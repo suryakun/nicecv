@@ -1,5 +1,6 @@
-import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import NextAuthProvider from '@/components/auth/next-auth-provider';
+import type { Metadata } from 'next';
 
 import './globals.css';
 
@@ -18,7 +19,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className={`min-h-screen bg-gray-50`}>{children}</div>
+        <NextAuthProvider>
+          <div className={`min-h-screen bg-transparent`}>{children}</div>
+        </NextAuthProvider>
       </body>
     </html>
   );
