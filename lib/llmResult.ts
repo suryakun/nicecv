@@ -45,7 +45,7 @@ export type LLMResult = {
   certification: {
     id?: string;
     name: string;
-    time: string;
+    time?: string;
     description?: string;
   }[];
   publication: {

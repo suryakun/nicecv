@@ -1,6 +1,7 @@
 import { Previewer } from '@/components/previewer';
 import { LLMResult } from '@/lib/llmResult';
 import db from '@/prisma/db';
+import { PreviewButtons } from '@/components/preview-buttons';
 
 type Props = {
   params: {
@@ -34,7 +35,8 @@ export default async function PreviewPage(props: Props) {
   });
 
   return (
-    <div className="flex justify-center items-center overflow-y-scroll py-4 bg-slate-300">
+    <div className="flex relative justify-center items-start m-[-100px] overflow-y-scroll py-4 bg-slate-300">
+      <PreviewButtons {...props.params} />
       <Previewer
         template={template.fileName}
         data={resume as unknown as LLMResult}

@@ -6,8 +6,13 @@ import puppeteer from 'puppeteer';
 import path from 'path';
 import { PDFOptions, PaperFormat } from 'puppeteer';
 import fs from 'fs';
+import { getServerSession } from 'next-auth';
 
-export const generatePDF = async (templateId: number, resumeId: string) => {
+export const generatePDF = async (
+  templateId: number,
+  resumeId: string,
+): Promise<string> => {
+  const session = await getServerSession();
   const data = await db.resume.findUnique({
     where: {
       id: resumeId,
@@ -66,4 +71,15 @@ export const generatePDF = async (templateId: number, resumeId: string) => {
 
   await page.pdf(options);
   await browser.close();
+
+  await db.resume.update({
+    where: {
+      id: resumeId,
+    },
+    data: {
+      userId: session?.user?.id ?? '',
+    },
+  });
+
+  return pdfPath;
 };

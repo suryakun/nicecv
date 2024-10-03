@@ -34,7 +34,7 @@ export const Previewer = (props: Props) => {
 
   return (
     <div className="flex justify-center items-start">
-      <div className="transform scale-[0.8]">
+      <div className="transform scale-[0.8] shadow-lg border border-gray-300">
         <iframe
           title="previewer"
           ref={iframeRef}

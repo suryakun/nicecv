@@ -2,9 +2,8 @@
 
 import db from '@/prisma/db';
 import { LLMResult } from '../llmResult';
-import { redirect } from 'next/navigation';
 
-export const updateResume = async (values: LLMResult, templateId?: string) => {
+export const updateResume = async (values: LLMResult) => {
   await db.$transaction(async (tx) => {
     await tx.resume.update({
       where: {
@@ -206,8 +205,6 @@ export const updateResume = async (values: LLMResult, templateId?: string) => {
       });
     }
   });
-
-  redirect(`/builder/preview/${templateId}/resume/${values.id}`);
 };
 
 export const createNewResume = async (values: LLMResult) => {

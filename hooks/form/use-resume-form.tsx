@@ -35,7 +35,7 @@ export const useResumeForm = (props: ResumeFormProps) => {
   const CertificationSchema = z.object({
     id: z.string().optional(),
     name: z.string().min(1, 'Certification name is required'),
-    time: z.string().min(1, 'Certification year is required'),
+    time: z.string().optional(),
     description: z.string().optional(),
   });
 

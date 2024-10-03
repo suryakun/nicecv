@@ -19,14 +19,11 @@ model User {
   name      String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  Resume Resume[]
 }
 
 model Resume {
   id        String   @id @default(cuid())
   userId    String?
-  user      User?     @relation(fields: [userId], references: [id])
   title     String?
   summary   String?
   name      String?

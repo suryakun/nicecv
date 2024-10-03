@@ -1,13 +1,13 @@
-"use server";
-import fs from "fs/promises";
-import { LLMResult } from "@/lib/llmResult";
-import FileProcess from "@/lib/form-process";
-import { redirect } from "next/navigation";
-import db from "@/prisma/db";
+'use server';
+import fs from 'fs/promises';
+import { LLMResult } from '@/lib/llmResult';
+import FileProcess from '@/lib/form-process';
+import { redirect } from 'next/navigation';
+import db from '@/prisma/db';
 
 export async function retrievePDF(formData: FormData) {
-  let resumeId = "";
-  const file = formData.get("file") as File;
+  let resumeId = '';
+  const file = formData.get('file') as File;
   const arrayBuffer = await file.arrayBuffer();
   const buffer = new Uint8Array(arrayBuffer);
   const timestamp = new Date().getTime();

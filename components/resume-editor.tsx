@@ -25,6 +25,9 @@ import { Form } from './ui/form';
 import { CustomFormField } from './custom-form-field';
 import { CustomFormTextarea } from './custom-form-textarea';
 import { FieldErrors, FieldValues } from 'react-hook-form';
+import { CertificationInput } from './certification-input';
+import { signIn, useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 type Props = {
   template: TemplateDTO;
@@ -33,17 +36,39 @@ type Props = {
 
 export const Editor = (props: Props) => {
   const [openState, setOpenState] = useState('personal');
+  const [isLoading, setIsLoading] = useState(false);
   const form = useResumeForm({ resume: props.resume });
+  const { status } = useSession();
+  const router = useRouter();
 
   const onSubmit = async (data: LLMResult) => {
-    await updateResume(data, props.template.id.toString());
-    await generatePDF(props.template.id, props.resume?.id?.toString() || '');
+    setIsLoading(true);
+    await updateResume(data);
+    if (status !== 'authenticated') {
+      signIn('keycloak', {
+        callbackUrl: `/builder/preview/${props.template.id}/resume/${props.resume?.id}`,
+      });
+    } else {
+      await generatePDF(props.template.id, props.resume?.id?.toString() || '');
+      router.push(
+        `/builder/preview/${props.template.id}/resume/${props.resume?.id}`,
+      );
+    }
+    setIsLoading(false);
   };
 
   const onError = (errors: FieldErrors<FieldValues>) => {
     const keys = Object.keys(errors);
     setOpenState(keys[0]);
   };
+
+  if (isLoading) {
+    return (
+      <div className="w-full h-screen flex justify-center items-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
+      </div>
+    );
+  }
 
   return (
     <Form {...form}>
@@ -161,6 +186,14 @@ export const Editor = (props: Props) => {
                     </AccordionTrigger>
                     <AccordionContent className="p-4">
                       <PublicationInput control={form.control} />
+                    </AccordionContent>
+                  </AccordionItem>
+                  <AccordionItem value="certification">
+                    <AccordionTrigger className="font-md bg-primary text-white p-2">
+                      9. Certification
+                    </AccordionTrigger>
+                    <AccordionContent className="p-4">
+                      <CertificationInput control={form.control} />
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion>
