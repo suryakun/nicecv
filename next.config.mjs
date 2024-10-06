@@ -5,6 +5,10 @@ const nextConfig = {
     serverComponentsExternalPackages: ['pdf-parse'],
   },
   webpack: (config) => {
+    config.experiments = {
+      asyncWebAssembly: true,
+      layers: true,
+    };
     // Add Handlebars loader
     config.module.rules.push({
       test: /\.hbs$/,

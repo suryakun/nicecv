@@ -18,7 +18,7 @@ import {
   MenubarMenu,
   MenubarTrigger,
 } from './ui/menubar';
-import { LogOut } from 'lucide-react';
+import { LogOut, LayoutDashboard } from 'lucide-react';
 
 export const CustomNavbar = () => {
   const { status, data: session } = useSession();
@@ -60,10 +60,25 @@ export const CustomNavbar = () => {
                     <MenubarTrigger className="bg-primary text-white border-0 outline-none">
                       Hi, {session.user?.name}
                     </MenubarTrigger>
-                    <MenubarContent className="flex p-4 justify-center gap-4 items-center">
-                      <LogOut size={16} />
-                      <button onClick={() => signOut()}>
-                        <span className="text-black">Logout</span>
+                    <MenubarContent className="flex flex-col p-4 gap-4">
+                      <Link
+                        href="/dashboard"
+                        passHref
+                        className="flex justify-start gap-4 items-center "
+                      >
+                        <LayoutDashboard size={16} />
+                        <span className="text-black hover:text-primary">
+                          Dashboard
+                        </span>
+                      </Link>
+                      <button
+                        onClick={() => signOut()}
+                        className="flex justify-start gap-4 items-center "
+                      >
+                        <LogOut size={16} />
+                        <span className="text-black hover:text-primary">
+                          Logout
+                        </span>
                       </button>
                     </MenubarContent>
                   </MenubarMenu>

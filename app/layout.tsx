@@ -1,6 +1,7 @@
 import { Inter } from 'next/font/google';
 import NextAuthProvider from '@/components/auth/next-auth-provider';
 import type { Metadata } from 'next';
+import { Toaster } from '@/components/ui/toaster';
 
 import './globals.css';
 
@@ -22,6 +23,7 @@ export default function RootLayout({
         <NextAuthProvider>
           <div className={`min-h-screen bg-transparent`}>{children}</div>
         </NextAuthProvider>
+        <Toaster />
       </body>
     </html>
   );

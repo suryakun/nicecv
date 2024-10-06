@@ -28,6 +28,7 @@ import { FieldErrors, FieldValues } from 'react-hook-form';
 import { CertificationInput } from './certification-input';
 import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { useToast } from '@/hooks/use-toast';
 
 type Props = {
   template: TemplateDTO;
@@ -38,21 +39,34 @@ export const Editor = (props: Props) => {
   const [openState, setOpenState] = useState('personal');
   const [isLoading, setIsLoading] = useState(false);
   const form = useResumeForm({ resume: props.resume });
-  const { status } = useSession();
+  const { status, data: user } = useSession();
   const router = useRouter();
+  const { toast } = useToast();
 
   const onSubmit = async (data: LLMResult) => {
-    setIsLoading(true);
-    await updateResume(data);
+    await updateResume(user?.user.id || '', props.template.id, data);
+    const previewUrl = `/builder/preview/${props.template.id}/resume/${props.resume?.id}`;
     if (status !== 'authenticated') {
-      signIn('keycloak', {
-        callbackUrl: `/builder/preview/${props.template.id}/resume/${props.resume?.id}`,
+      toast({
+        title: 'Please sign in to save your resume',
+        description: 'You will be redirected to the sign-in page',
+        action: (
+          <button
+            onClick={() =>
+              signIn('keycloak', {
+                callbackUrl: `${previewUrl}?from=signin`,
+              })
+            }
+            className="whitespace-nowrap"
+          >
+            Sign in
+          </button>
+        ),
       });
     } else {
+      setIsLoading(true);
       await generatePDF(props.template.id, props.resume?.id?.toString() || '');
-      router.push(
-        `/builder/preview/${props.template.id}/resume/${props.resume?.id}`,
-      );
+      router.push(previewUrl);
     }
     setIsLoading(false);
   };

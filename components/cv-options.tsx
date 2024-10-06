@@ -23,7 +23,7 @@ export const CVOptions = () => {
           </div>
         </CardContent>
         <CardFooter className="justify-center">
-          Enhance from existing CV file (.pdf)
+          Use my existing CV file (.pdf Max 1MB)
         </CardFooter>
       </Card>
       <Card className="w-[350px]">

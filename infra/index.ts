@@ -1,34 +1,7 @@
-import * as pulumi from '@pulumi/pulumi';
+// import * as pulumi from '@pulumi/pulumi';
 import * as aws from '@pulumi/aws';
-import * as awsx from '@pulumi/awsx';
-import * as random from '@pulumi/random';
-
-const keycloakAdminPassword = new random.RandomPassword(
-  'keycloak-admin-password',
-  {
-    length: 16,
-    special: true,
-    overrideSpecial: '!@#$%^&*()',
-  },
-);
-
-const keycloakSecret = new aws.secretsmanager.Secret('keycloak-secret', {
-  name: 'keycloak/admin-credentials',
-  description: 'Keycloak admin credentials',
-});
-
-const keycloakSecretVersion = new aws.secretsmanager.SecretVersion(
-  'keycloak-secret-version',
-  {
-    secretId: keycloakSecret.id,
-    secretString: keycloakAdminPassword.result.apply((password) =>
-      JSON.stringify({
-        username: 'admin',
-        password,
-      }),
-    ),
-  },
-);
+// import * as awsx from '@pulumi/awsx';
+// import * as random from '@pulumi/random';
 
 const ec2Role = new aws.iam.Role('keycloak-ec2-role', {
   assumeRolePolicy: JSON.stringify({
@@ -40,20 +13,6 @@ const ec2Role = new aws.iam.Role('keycloak-ec2-role', {
           Service: 'ec2.amazonaws.com',
         },
         Action: 'sts:AssumeRole',
-      },
-    ],
-  }),
-});
-
-const secretPolicy = new aws.iam.RolePolicy('keycloak-secrets-policy', {
-  role: ec2Role.id,
-  policy: JSON.stringify({
-    Version: '2012-10-17',
-    Statement: [
-      {
-        Effect: 'Allow',
-        Action: ['secretsmanager:GetSecretValue'],
-        Resource: keycloakSecret.arn,
       },
     ],
   }),
@@ -79,7 +38,7 @@ const vpc = new aws.ec2.Vpc('keycloak-vpc', {
 const publicSubnet = new aws.ec2.Subnet('keycloak-public-subnet', {
   vpcId: vpc.id,
   cidrBlock: '10.0.1.0/24',
-  availabilityZone: 'ap-southeast-1a',
+  availabilityZone: 'ap-southeast-3a',
   mapPublicIpOnLaunch: true,
   tags: {
     Name: 'keycloak-public-subnet',
@@ -171,9 +130,8 @@ systemctl enable docker
 
 # Get admin credentials from Secrets Manager
 REGION=$(curl -s http://169.254.169.254/latest/meta-data/placement/region)
-SECRETS=$(aws secretsmanager get-secret-value --secret-id keycloak/admin-credentials --region $REGION --query SecretString --output text)
-ADMIN_USERNAME=$(echo $SECRETS | jq -r .username)
-ADMIN_PASSWORD=$(echo $SECRETS | jq -r .password)
+ADMIN_USERNAME=Admin-NICE
+ADMIN_PASSWORD=fxP47arneUAxEml86UrfNnfG/nh4rfzUzQ5reOBDZZY=
 
 # Run Keycloak container with production configuration
 docker run -d \
@@ -202,7 +160,7 @@ const ami = aws.ec2.getAmi({
 });
 
 const instance = new aws.ec2.Instance('keycloak-instance', {
-  instanceType: 't2.medium',
+  instanceType: aws.ec2.InstanceType.T2_Medium,
   ami: ami.then((ami) => ami.id),
   subnetId: publicSubnet.id,
   vpcSecurityGroupIds: [securityGroup.id],
@@ -217,9 +175,10 @@ const instance = new aws.ec2.Instance('keycloak-instance', {
     Name: 'keycloak-instance',
     Environment: 'production',
   },
+  availabilityZone: 'ap-southeast-3a',
 });
 
 // Export the necessary information
 export const publicIp = instance.publicIp;
 export const publicDns = instance.publicDns;
-export const secretArn = keycloakSecret.arn;
+export const routeTableAss = routeTableAssociation.id;

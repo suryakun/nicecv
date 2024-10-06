@@ -4,6 +4,7 @@ import { retrievePDF } from '@/app/(public)/builder/actions';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Image from 'next/image';
+import { redirect } from 'next/navigation';
 
 export const UploadButton = () => {
   const [isBrowser, setIsBrowser] = useState(false);
@@ -16,8 +17,17 @@ export const UploadButton = () => {
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    setLoading(true);
-    e.currentTarget.form?.requestSubmit();
+
+    const file = e.target.files?.[0];
+    if (file) {
+      const maxSizeInBytes = 1 * 1024 * 1024; // 1MB in bytes
+      if (file.size > maxSizeInBytes) {
+        redirect(`/builder/select?error=file-size`);
+        return;
+      }
+      setLoading(true);
+      e.currentTarget.form?.requestSubmit();
+    }
   };
 
   const loadingSpinner = (

@@ -6,13 +6,11 @@ import puppeteer from 'puppeteer';
 import path from 'path';
 import { PDFOptions, PaperFormat } from 'puppeteer';
 import fs from 'fs';
-import { getServerSession } from 'next-auth';
 
 export const generatePDF = async (
   templateId: number,
   resumeId: string,
 ): Promise<string> => {
-  const session = await getServerSession();
   const data = await db.resume.findUnique({
     where: {
       id: resumeId,
@@ -38,7 +36,8 @@ export const generatePDF = async (
   const html = template(data);
 
   const pdfDir = path.join(process.cwd(), 'pdf');
-  const pdfPath = path.join(pdfDir, `${templateId}-${resumeId}.pdf`);
+  const pdfPath = path.join(pdfDir, `${resumeId}.pdf`);
+  const screenshotPath = path.join(pdfDir, `${resumeId}.png`);
 
   // Ensure the directory exists
   if (!fs.existsSync(pdfDir)) {
@@ -46,12 +45,19 @@ export const generatePDF = async (
   }
 
   const options: PDFOptions = {
-    scale: 0.9,
+    scale: 0.8,
     format: 'A4' as PaperFormat,
     landscape: false,
-    margin: { top: '1cm', right: '1cm', bottom: '1cm', left: '1cm' },
     printBackground: true,
     path: pdfPath,
+    preferCSSPageSize: true,
+    waitForFonts: true,
+    margin: {
+      top: '1cm',
+      right: '2.3cm',
+      bottom: '1cm',
+      left: '2.3cm',
+    },
   };
 
   const browser = await puppeteer.launch({
@@ -61,25 +67,38 @@ export const generatePDF = async (
 
   const page = await browser.newPage();
 
+  // Set the viewport with calculated dimensions
   await page.setViewport({
-    width: 794,
-    height: 1123,
-    deviceScaleFactor: 2, // Increase for better quality
+    width: 795, // 210mm = 8.27 inches = ~795px
+    height: 1125, // 297mm = 11.69 inches = ~1125px
+    deviceScaleFactor: 1,
   });
 
   await page.setContent(html, { waitUntil: 'networkidle0' });
 
   await page.pdf(options);
-  await browser.close();
-
-  await db.resume.update({
-    where: {
-      id: resumeId,
-    },
-    data: {
-      userId: session?.user?.id ?? '',
-    },
+  await page.addStyleTag({
+    content: `
+      @page {
+        size: A4;
+        margin: 0;
+      }
+      body {
+        margin: 96px;
+        padding: 0;
+      }
+      /* Ensure content stays within margins */
+      * {
+        box-sizing: border-box;
+      }
+    `,
   });
+  await page.screenshot({
+    path: screenshotPath,
+    fullPage: true,
+    optimizeForSpeed: true,
+  });
+  await browser.close();
 
   return pdfPath;
 };

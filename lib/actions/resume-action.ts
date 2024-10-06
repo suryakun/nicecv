@@ -2,8 +2,15 @@
 
 import db from '@/prisma/db';
 import { LLMResult } from '../llmResult';
+import logger from '../logger';
 
-export const updateResume = async (values: LLMResult) => {
+export const updateResume = async (
+  userId: string,
+  templateId: number,
+  values: LLMResult,
+) => {
+  logger.info('>>>' + userId);
+
   await db.$transaction(async (tx) => {
     await tx.resume.update({
       where: {
@@ -16,6 +23,8 @@ export const updateResume = async (values: LLMResult) => {
         email: values.email,
         address: values.address,
         summary: values.summary,
+        userId,
+        templateId,
       },
     });
 
@@ -207,7 +216,11 @@ export const updateResume = async (values: LLMResult) => {
   });
 };
 
-export const createNewResume = async (values: LLMResult) => {
+export const createNewResume = async (
+  userId: string,
+  templateId: number,
+  values: LLMResult,
+) => {
   await db.$transaction(async (tx) => {
     const resume = await tx.resume.create({
       data: {
@@ -217,6 +230,8 @@ export const createNewResume = async (values: LLMResult) => {
         email: values.email,
         address: values.address,
         summary: values.summary,
+        userId,
+        templateId,
       },
     });
 

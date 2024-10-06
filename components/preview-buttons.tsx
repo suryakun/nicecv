@@ -12,8 +12,29 @@ type Props = {
 export const PreviewButtons = (props: Props) => {
   const { status } = useSession();
 
-  const downloadFile = useCallback(() => {
-    console.log('download');
+  const downloadFile = useCallback(async () => {
+    const { templateId, resumeId } = props;
+    const response = await fetch(
+      `/api/resume/${resumeId}?templateId=${templateId}`,
+      {
+        method: 'GET',
+      },
+    );
+
+    if (!response.ok) {
+      console.error('Failed to download file');
+      return;
+    }
+
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${resumeId}.pdf`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    window.URL.revokeObjectURL(url);
   }, []);
 
   return (

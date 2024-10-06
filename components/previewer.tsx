@@ -34,11 +34,11 @@ export const Previewer = (props: Props) => {
 
   return (
     <div className="flex justify-center items-start">
-      <div className="transform scale-[0.8] shadow-lg border border-gray-300">
+      <div className="border-gray-300">
         <iframe
           title="previewer"
           ref={iframeRef}
-          className="w-[210mm] h-full min-h-[calc(100vh-233.33px)]  border-0"
+          className="w-[210mm] h-full min-h-[calc(100vh-233.33px)] transform scale-[0.8]  border shadow-lg"
           onLoad={() => {
             const iframe = iframeRef.current;
             if (iframe) {

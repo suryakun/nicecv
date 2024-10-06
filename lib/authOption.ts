@@ -36,6 +36,7 @@ async function refreshAccessToken(token: JWT) {
     );
 
     const refreshedTokens = await response.json();
+    logger.info(JSON.stringify(refreshedTokens));
 
     if (!response.ok) {
       throw refreshedTokens;
@@ -48,7 +49,7 @@ async function refreshAccessToken(token: JWT) {
       refreshToken: refreshedTokens.refresh_token ?? token.refreshToken,
     };
   } catch (error) {
-    logger.error('RefreshAccessTokenError:', error);
+    logger.error(JSON.stringify(error));
     return {
       ...token,
       error: 'RefreshAccessTokenError',
