@@ -1,7 +1,14 @@
-// import * as pulumi from '@pulumi/pulumi';
+import * as pulumi from '@pulumi/pulumi';
 import * as aws from '@pulumi/aws';
-// import * as awsx from '@pulumi/awsx';
-// import * as random from '@pulumi/random';
+
+const config = new pulumi.Config();
+const domain = config.require('domain');
+const subdomain = `auth.${domain}`;
+
+// Create a new Route 53 hosted zone for the GoDaddy domain
+const hostedZone = new aws.route53.Zone('godaddy-hosted-zone', {
+  name: domain,
+});
 
 const ec2Role = new aws.iam.Role('keycloak-ec2-role', {
   assumeRolePolicy: JSON.stringify({
@@ -68,6 +75,7 @@ const routeTable = new aws.ec2.RouteTable('keycloak-rt', {
   },
 });
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const routeTableAssociation = new aws.ec2.RouteTableAssociation(
   'keycloak-rta',
   {
@@ -77,7 +85,7 @@ const routeTableAssociation = new aws.ec2.RouteTableAssociation(
 );
 
 const securityGroup = new aws.ec2.SecurityGroup('keycloak-sg', {
-  description: 'Allow HTTP and HTTPS traffic',
+  description: 'Allow HTTP, HTTPS, and SSH traffic',
   vpcId: vpc.id,
   ingress: [
     {
@@ -88,20 +96,20 @@ const securityGroup = new aws.ec2.SecurityGroup('keycloak-sg', {
     },
     {
       protocol: 'tcp',
-      fromPort: 8080,
-      toPort: 8080,
-      cidrBlocks: ['0.0.0.0/0'],
-    },
-    {
-      protocol: 'tcp',
-      fromPort: 8443,
-      toPort: 8443,
+      fromPort: 80,
+      toPort: 80,
       cidrBlocks: ['0.0.0.0/0'],
     },
     {
       protocol: 'tcp',
       fromPort: 443,
       toPort: 443,
+      cidrBlocks: ['0.0.0.0/0'],
+    },
+    {
+      protocol: 'tcp',
+      fromPort: 8080,
+      toPort: 8080,
       cidrBlocks: ['0.0.0.0/0'],
     },
   ],
@@ -120,32 +128,34 @@ const securityGroup = new aws.ec2.SecurityGroup('keycloak-sg', {
 });
 
 const userData = `#!/bin/bash
-# Install required packages
-apt-get update
-apt-get install -y docker.io awscli jq
+  # Install required packages
+  apt-get update
+  apt-get install -y docker.io nginx certbot python3-certbot-nginx
 
-# Start Docker service
-systemctl start docker
-systemctl enable docker
+  # Start Docker service
+  systemctl start docker
+  systemctl enable docker
 
-# Get admin credentials from Secrets Manager
-REGION=$(curl -s http://169.254.169.254/latest/meta-data/placement/region)
-ADMIN_USERNAME=Admin-NICE
-ADMIN_PASSWORD=fxP47arneUAxEml86UrfNnfG/nh4rfzUzQ5reOBDZZY=
+  curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+  apt-get install -y nodejs
 
-# Run Keycloak container with production configuration
-docker run -d \
-    --name keycloak \
-    -p 8080:8080 \
-    -p 8443:8443 \
-    -e KEYCLOAK_ADMIN="$ADMIN_USERNAME" \
-    -e KEYCLOAK_ADMIN_PASSWORD="$ADMIN_PASSWORD" \
-    -e KC_PROXY=edge \
-    -e KC_HTTP_ENABLED=true \
-    -e KC_HOSTNAME_STRICT=false \
-    -e KC_HOSTNAME_STRICT_HTTPS=false \
-    quay.io/keycloak/keycloak:latest \
-    start
+  # Get admin credentials from Secrets Manager
+  REGION=$(curl -s http://169.254.169.254/latest/meta-data/placement/region)
+  ADMIN_USERNAME=Admin-NICE
+  ADMIN_PASSWORD=fxP47arneUAxEml86UrfNnfG/nh4rfzUzQ5reOBDZZY=
+
+  # Run Keycloak container with production configuration
+  docker run -d \
+      --name keycloak \
+      -p 8080:8080 \
+      -e KEYCLOAK_ADMIN="$ADMIN_USERNAME" \
+      -e KEYCLOAK_ADMIN_PASSWORD="$ADMIN_PASSWORD" \
+      -e KC_PROXY=edge \
+      -e KC_HTTP_ENABLED=true \
+      -e KC_HOSTNAME_STRICT=false \
+      -e KC_HOSTNAME_STRICT_HTTPS=false \
+      quay.io/keycloak/keycloak:latest \
+      start
 `;
 
 const ami = aws.ec2.getAmi({
@@ -153,14 +163,18 @@ const ami = aws.ec2.getAmi({
   filters: [
     {
       name: 'name',
-      values: ['ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*'],
+      values: ['ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*'],
+    },
+    {
+      name: 'virtualization-type',
+      values: ['hvm'],
     },
   ],
-  owners: ['099720109477'], // Canonical
+  owners: ['099720109477'],
 });
 
 const instance = new aws.ec2.Instance('keycloak-instance', {
-  instanceType: aws.ec2.InstanceType.T2_Medium,
+  instanceType: 't3.micro',
   ami: ami.then((ami) => ami.id),
   subnetId: publicSubnet.id,
   vpcSecurityGroupIds: [securityGroup.id],
@@ -176,9 +190,18 @@ const instance = new aws.ec2.Instance('keycloak-instance', {
     Environment: 'production',
   },
   availabilityZone: 'ap-southeast-3a',
+  keyName: 'NC',
+  associatePublicIpAddress: true,
+});
+
+// Create an Elastic IP
+const eip = new aws.ec2.Eip('keycloak-eip', {
+  instance: instance.id,
+  vpc: true,
 });
 
 // Export the necessary information
-export const publicIp = instance.publicIp;
-export const publicDns = instance.publicDns;
-export const routeTableAss = routeTableAssociation.id;
+export const instanceId = instance.id;
+export const publicIp = eip.publicIp;
+export const keycloakUrl = pulumi.interpolate`https://${subdomain}`;
+export const nameServers = hostedZone.nameServers;

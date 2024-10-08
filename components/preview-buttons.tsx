@@ -3,6 +3,7 @@ import { SidebarClose, Download } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useCallback } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 type Props = {
   templateId: string;
@@ -11,6 +12,7 @@ type Props = {
 
 export const PreviewButtons = (props: Props) => {
   const { status } = useSession();
+  const router = useRouter();
 
   const downloadFile = useCallback(async () => {
     const { templateId, resumeId } = props;
@@ -35,7 +37,8 @@ export const PreviewButtons = (props: Props) => {
     a.click();
     a.remove();
     window.URL.revokeObjectURL(url);
-  }, []);
+    router.push(`/credit`);
+  }, [props, router]);
 
   return (
     <div className="absolute right-[100px] top-[160px] text-white p-4 z-50 flex flex-col gap-4">
