@@ -96,10 +96,10 @@ export const CustomNavbar = () => {
                 >
                   <button
                     onClick={() =>
-                      signIn('keycloak', { callbackUrl: currentUrl })
+                      signIn('google', { callbackUrl: currentUrl })
                     }
                   >
-                    Login
+                    Login with Google
                   </button>
                 </NavigationMenuLink>
               </NavigationMenuItem>
