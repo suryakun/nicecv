@@ -53,7 +53,7 @@ export const Editor = (props: Props) => {
         action: (
           <button
             onClick={() =>
-              signIn('keycloak', {
+              signIn('google', {
                 callbackUrl: `${previewUrl}?from=signin`,
               })
             }
