@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{name}}'s Resume</title>
+    <style>
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 12px;
+        line-height: 1.6;
+        color: #333;
+        background: #f0f0f0;
+        margin: 0;
+        padding: 0;
+      }
+      .page {
+        padding: 20mm;
+        background: white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        box-sizing: border-box;
+        display: flex;
+      }
+      .main-content {
+        flex: 2;
+        padding-right: 20px;
+      }
+      .sidebar {
+        flex: 1;
+        padding-left: 20px;
+        border-left: 2px solid #3498db;
+      }
+      h1,
+      h2,
+      h3 {
+        margin-top: 0;
+        color: #2c3e50;
+      }
+      h1 {
+        font-size: 28px;
+        margin-bottom: 10px;
+        color: #3498db;
+      }
+      h2 {
+        font-size: 20px;
+        border-bottom: 2px solid #3498db;
+        padding-bottom: 5px;
+        margin-top: 25px;
+        color: #2980b9;
+      }
+      h3 {
+        font-size: 16px;
+        margin-bottom: 5px;
+        color: #34495e;
+      }
+      ul {
+        padding-left: 20px;
+        margin: 0;
+      }
+      .contact-info {
+        margin-bottom: 20px;
+        color: #7f8c8d;
+      }
+      .experience-item,
+      .education-item,
+      .certification-item,
+      .publication-item {
+        margin-bottom: 15px;
+        padding: 10px;
+        background-color: #f9f9f9;
+        border-left: 3px solid #3498db;
+      }
+      .skill-item,
+      .language-item,
+      .reference-item {
+        margin-bottom: 10px;
+      }
+      .time {
+        font-style: italic;
+        color: #95a5a6;
+      }
+      a {
+        color: #3498db;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      .skill-item strong,
+      .language-item strong {
+        color: #2c3e50;
+      }
+      .reference-item strong {
+        color: #34495e;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <div class="main-content">
+        <h1>{{name}}</h1>
+        <div class="contact-info">
+          {{title}} | {{phone}} | {{email}} | {{address}}
+        </div>
+        <h2>Summary</h2>
+        <p>{{summary}}</p>
+
+        <h2>Experience</h2>
+        {{#each experience}}
+        <div class="experience-item">
+          <h3>{{title}} at {{company}}</h3>
+          <div class="time">{{workTime}}</div>
+          <p>{{jobDetail}}</p>
+        </div>
+        {{/each}}
+
+        <h2>Education</h2>
+        {{#each education}}
+        <div class="education-item">
+          <h3>{{name}}</h3>
+          <div class="time">{{time}}</div>
+          <p>{{description}}</p>
+        </div>
+        {{/each}}
+
+        <h2>Publications</h2>
+        {{#each publication}}
+        <div class="publication-item">
+          <h3>{{name}}</h3>
+          <div class="time">{{time}}</div>
+          <p>{{description}}</p>
+        </div>
+        {{/each}}
+      </div>
+
+      <div class="sidebar">
+        <h2>Skills</h2>
+        {{#each skill}}
+        <div class="skill-item">
+          <strong>{{skillName}}</strong>{{#if yearOfExperience}}
+          ({{yearOfExperience}} years){{/if}}
+        </div>
+        {{/each}}
+
+        <h2>Languages</h2>
+        {{#each language}}
+        <div class="language-item">
+          <strong>{{name}}</strong>{{#if level}} - {{level}}{{/if}}
+        </div>
+        {{/each}}
+
+        <h2>Certifications</h2>
+        {{#each certification}}
+        <div class="certification-item">
+          <h3>{{name}}</h3>
+          <div class="time">{{time}}</div>
+          <p>{{description}}</p>
+        </div>
+        {{/each}}
+
+        <h2>Awards</h2>
+        {{#each award}}
+        <div class="award-item">
+          <h3>{{name}}</h3>
+          <div class="time">{{time}}</div>
+          <p>{{description}}</p>
+        </div>
+        {{/each}}
+
+        <h2>Courses</h2>
+        {{#each course}}
+        <div class="course-item">
+          <h3>{{name}}</h3>
+          <div class="time">{{time}}</div>
+          <p>{{description}}</p>
+        </div>
+        {{/each}}
+
+        <h2>Links</h2>
+        <ul>
+          {{#each links}}
+          <li><a href="{{this}}">{{this}}</a></li>
+          {{/each}}
+        </ul>
+
+        <h2>Hobbies</h2>
+        <ul>
+          {{#each hobbies}}
+          <li>{{this}}</li>
+          {{/each}}
+        </ul>
+
+        <h2>References</h2>
+        {{#each reference}}
+        <div class="reference-item">
+          <strong>{{name}}</strong>
+          - {{position}} at {{company}} {{#if phone}}<br />Phone:
+          {{phone}}{{/if}} {{#if email}}<br />Email: {{email}}{{/if}}
+        </div>
+        {{/each}}
+      </div>
+    </div>
+  </body>
+</html>

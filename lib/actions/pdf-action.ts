@@ -45,22 +45,23 @@ export const generatePDF = async (
   }
 
   const options: PDFOptions = {
-    scale: 0.8,
+    scale: 1,
     format: 'A4' as PaperFormat,
     landscape: false,
-    printBackground: true,
+    printBackground: false,
     path: pdfPath,
     preferCSSPageSize: true,
     waitForFonts: true,
     margin: {
-      top: '1cm',
-      right: '2.3cm',
-      bottom: '1cm',
-      left: '2.3cm',
+      top: '0',
+      right: '0',
+      bottom: '0',
+      left: '0',
     },
   };
 
   const browser = await puppeteer.launch({
+    executablePath: process.env.CHROMIUM_PATH,
     args: ['--no-sandbox'],
     headless: true,
   });

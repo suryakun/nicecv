@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "prestart": "prisma migrate dev && tsx scripts/seed.ts",
+    "prestart": "prisma migrate dev",
     "start": "next start",
     "db:seed": "tsx scripts/seed.ts",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",

@@ -19,6 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <link rel="icon" href="/newlogo.svg" type="image/png" />
       <body className={inter.className}>
         <NextAuthProvider>
           <div className={`min-h-screen bg-transparent`}>{children}</div>
