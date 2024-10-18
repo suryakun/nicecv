@@ -10,15 +10,12 @@
         font-size: 12px;
         line-height: 1.6;
         color: #333;
-        background: #f0f0f0;
+        background: white;
         margin: 0;
         padding: 0;
       }
       .page {
-        padding: 20mm;
         background: white;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        box-sizing: border-box;
         display: flex;
       }
       .main-content {
@@ -102,9 +99,10 @@
         <div class="contact-info">
           {{title}} | {{phone}} | {{email}} | {{address}}
         </div>
+        {{#if summary}}
         <h2>Summary</h2>
         <p>{{summary}}</p>
-
+        {{/if}} {{#if experience}}
         <h2>Experience</h2>
         {{#each experience}}
         <div class="experience-item">
@@ -112,8 +110,7 @@
           <div class="time">{{workTime}}</div>
           <p>{{jobDetail}}</p>
         </div>
-        {{/each}}
-
+        {{/each}} {{/if}} {{#if education}}
         <h2>Education</h2>
         {{#each education}}
         <div class="education-item">
@@ -121,8 +118,7 @@
           <div class="time">{{time}}</div>
           <p>{{description}}</p>
         </div>
-        {{/each}}
-
+        {{/each}} {{/if}} {{#if publication}}
         <h2>Publications</h2>
         {{#each publication}}
         <div class="publication-item">
@@ -130,25 +126,24 @@
           <div class="time">{{time}}</div>
           <p>{{description}}</p>
         </div>
-        {{/each}}
+        {{/each}} {{/if}}
       </div>
 
       <div class="sidebar">
+        {{#if skill}}
         <h2>Skills</h2>
         {{#each skill}}
         <div class="skill-item">
           <strong>{{skillName}}</strong>{{#if yearOfExperience}}
           ({{yearOfExperience}} years){{/if}}
         </div>
-        {{/each}}
-
+        {{/each}} {{/if}} {{#if language}}
         <h2>Languages</h2>
         {{#each language}}
         <div class="language-item">
           <strong>{{name}}</strong>{{#if level}} - {{level}}{{/if}}
         </div>
-        {{/each}}
-
+        {{/each}} {{/if}} {{#if certification}}
         <h2>Certifications</h2>
         {{#each certification}}
         <div class="certification-item">
@@ -156,8 +151,7 @@
           <div class="time">{{time}}</div>
           <p>{{description}}</p>
         </div>
-        {{/each}}
-
+        {{/each}} {{/if}} {{#if award}}
         <h2>Awards</h2>
         {{#each award}}
         <div class="award-item">
@@ -165,8 +159,7 @@
           <div class="time">{{time}}</div>
           <p>{{description}}</p>
         </div>
-        {{/each}}
-
+        {{/each}} {{/if}} {{#if course}}
         <h2>Courses</h2>
         {{#each course}}
         <div class="course-item">
@@ -174,22 +167,21 @@
           <div class="time">{{time}}</div>
           <p>{{description}}</p>
         </div>
-        {{/each}}
-
+        {{/each}} {{/if}} {{#if links}}
         <h2>Links</h2>
         <ul>
           {{#each links}}
           <li><a href="{{this}}">{{this}}</a></li>
           {{/each}}
         </ul>
-
+        {{/if}} {{#if hobbies}}
         <h2>Hobbies</h2>
         <ul>
           {{#each hobbies}}
           <li>{{this}}</li>
           {{/each}}
         </ul>
-
+        {{/if}} {{#if reference}}
         <h2>References</h2>
         {{#each reference}}
         <div class="reference-item">
@@ -197,7 +189,7 @@
           - {{position}} at {{company}} {{#if phone}}<br />Phone:
           {{phone}}{{/if}} {{#if email}}<br />Email: {{email}}{{/if}}
         </div>
-        {{/each}}
+        {{/each}} {{/if}}
       </div>
     </div>
   </body>

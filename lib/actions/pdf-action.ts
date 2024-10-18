@@ -48,16 +48,15 @@ export const generatePDF = async (
     scale: 1,
     format: 'A4' as PaperFormat,
     landscape: false,
-    printBackground: false,
+    printBackground: true,
     path: pdfPath,
-    preferCSSPageSize: true,
-    waitForFonts: true,
     margin: {
-      top: '0',
-      right: '0',
-      bottom: '0',
-      left: '0',
+      top: '12mm',
+      right: '12mm',
+      bottom: '12mm',
+      left: '12mm',
     },
+    preferCSSPageSize: false,
   };
 
   const browser = await puppeteer.launch({
@@ -68,7 +67,7 @@ export const generatePDF = async (
 
   const page = await browser.newPage();
 
-  // Set the viewport with calculated dimensions
+  // Set the viewport to A4 size
   await page.setViewport({
     width: 795, // 210mm = 8.27 inches = ~795px
     height: 1125, // 297mm = 11.69 inches = ~1125px
@@ -77,16 +76,16 @@ export const generatePDF = async (
 
   await page.setContent(html, { waitUntil: 'networkidle0' });
 
-  await page.pdf(options);
   await page.addStyleTag({
     content: `
       @page {
         size: A4;
-        margin: 0;
+        margin: 12mm;
       }
       body {
-        margin: 96px;
+        margin: 0;
         padding: 0;
+        box-sizing: border-box;
       }
       /* Ensure content stays within margins */
       * {
@@ -94,6 +93,9 @@ export const generatePDF = async (
       }
     `,
   });
+
+  await page.pdf(options);
+
   await page.screenshot({
     path: screenshotPath,
     fullPage: true,
