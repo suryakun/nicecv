@@ -56,7 +56,7 @@ export default async function PreviewPage(props: Props) {
   });
 
   return (
-    <div className="flex relative justify-center items-start m-[-100px] overflow-y-scroll py-4 bg-slate-300">
+    <div className="flex relative justify-center mt-[-100px] w-full items-start overflow-y-scroll bg-slate-300">
       <PreviewButtons {...props.params} />
       <Previewer
         template={template.fileName}

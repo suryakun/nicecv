@@ -45,7 +45,7 @@ export const generatePDF = async (
   }
 
   const options: PDFOptions = {
-    scale: 1,
+    scale: 0.88,
     format: 'A4' as PaperFormat,
     landscape: false,
     printBackground: true,
