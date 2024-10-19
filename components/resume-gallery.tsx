@@ -26,7 +26,7 @@ export const ResumeGallery: React.FC<ResumeGalleryProps> = ({ resumes }) => {
               height={400}
               src={`/api/resume/${resume.id}/image`}
               alt={`Resume ${resume.title}`}
-              className="max-h-[400px] overflow-hidden object-top object-cover"
+              className="max-h-[400px] overflow-hidden p-2 object-top object-cover"
             />
             <div className="absolute inset-0 flex justify-center items-center gap-4 bg-slate-500 bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity">
               <Link
