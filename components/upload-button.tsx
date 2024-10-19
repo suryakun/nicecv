@@ -31,9 +31,10 @@ export const UploadButton = () => {
   };
 
   const loadingSpinner = (
-    <div className="fixed inset-0 w-full h-full flex justify-center items-center bg-gray-100 flex-col bg-opacity-75 z-50">
+    <div className="fixed inset-0 w-full h-full flex justify-center items-center gap-4 bg-gray-100 flex-col bg-opacity-75 z-50">
       <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
       <h3>Analizing your CV. Please wait...</h3>
+      <h2>It may take a few seconds</h2>
     </div>
   );
 
