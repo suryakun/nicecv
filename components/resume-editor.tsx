@@ -20,7 +20,7 @@ import { EducationInput } from './education-input';
 import { CourseInput } from './course-input';
 import { AwardInput } from './award-input';
 import { PublicationInput } from './publication-input';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Form } from './ui/form';
 import { CustomFormField } from './custom-form-field';
 import { CustomFormTextarea } from './custom-form-textarea';
@@ -38,6 +38,14 @@ type Props = {
 export const Editor = (props: Props) => {
   const [openState, setOpenState] = useState('personal');
   const [isLoading, setIsLoading] = useState(false);
+  const [currentUrl, setCurrentUrl] = useState('');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setCurrentUrl(window.location.href);
+    }
+  }, []);
+
   const form = useResumeForm({ resume: props.resume });
   const { status, data: user } = useSession();
   const router = useRouter();
@@ -54,7 +62,7 @@ export const Editor = (props: Props) => {
           <button
             onClick={() =>
               signIn('google', {
-                callbackUrl: `${previewUrl}?from=signin`,
+                callbackUrl: currentUrl,
               })
             }
             className="whitespace-nowrap"
