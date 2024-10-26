@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{name}}'s Professional Resume</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Playfair+Display:wght@700&display=swap');
+
+      body {
+        font-family: 'Roboto', sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background: white;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        background: white;
+      }
+      .header {
+        background: #2c3e50;
+        color: white;
+        padding: 40px;
+        text-align: center;
+      }
+      .header h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: 36px;
+        margin: 0;
+      }
+      .header .title {
+        font-size: 18px;
+        margin-top: 10px;
+      }
+      .content {
+        display: flex;
+        padding: 40px 0px 40px 0px;
+      }
+      .main {
+        flex: 2;
+        padding-right: 40px;
+      }
+      .sidebar {
+        flex: 1;
+        background: #ecf0f1;
+        padding: 20px;
+      }
+      h2 {
+        font-family: 'Playfair Display', serif;
+        color: #2c3e50;
+        border-bottom: 2px solid #3498db;
+        padding-bottom: 10px;
+      }
+      h3 {
+        color: #2980b9;
+      }
+      .experience-item,
+      .education-item,
+      .certification-item .publication-item {
+        margin-bottom: 20px;
+      }
+      .time {
+        font-style: italic;
+        color: #7f8c8d;
+      }
+      .skill-item,
+      .language-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+      }
+      .skill-bar,
+      .language-bar {
+        background: #bdc3c7;
+        height: 10px;
+        width: 150px;
+        border-radius: 5px;
+      }
+      .skill-level,
+      .language-level {
+        background: #3498db;
+        height: 100%;
+        border-radius: 5px;
+      }
+      .skill-level-1 {
+        width: 10%;
+      }
+      .skill-level-2 {
+        width: 20%;
+      }
+      .skill-level-3 {
+        width: 30%;
+      }
+      .skill-level-4 {
+        width: 40%;
+      }
+      .skill-level-5 {
+        width: 50%;
+      }
+      .skill-level-6 {
+        width: 60%;
+      }
+      .skill-level-7 {
+        width: 70%;
+      }
+      .skill-level-8 {
+        width: 80%;
+      }
+      .skill-level-9 {
+        width: 90%;
+      }
+      .skill-level-10 {
+        width: 100%;
+      }
+      ul {
+        padding-left: 20px;
+      }
+      a {
+        color: #3498db;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      p {
+        word-wrap: break-word;
+        word-break: break-word;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>{{name}}</h1>
+        <div class="title">{{title}}</div>
+      </div>
+      <div class="content">
+        <div class="main">
+          {{#if summary}}
+          <h2>Professional Summary</h2>
+          <p>{{summary}}</p>
+          {{/if}} {{#if experience}}
+          <h2>Work Experience</h2>
+          {{#each experience}}
+          <div class="experience-item">
+            <h3>{{title}} at {{company}}</h3>
+            <div class="time">{{workTime}}</div>
+            <p>{{jobDetail}}</p>
+          </div>
+          {{/each}} {{/if}} {{#if education}}
+          <h2>Education</h2>
+          {{#each education}}
+          <div class="education-item">
+            <h3>{{name}}</h3>
+            <div class="time">{{time}}</div>
+            <p>{{description}}</p>
+          </div>
+          {{/each}} {{/if}} {{#if publication}}
+          <h2>Publications</h2>
+          {{#each publication}}
+          <div class="publication-item">
+            <h3>{{name}}</h3>
+            <div class="time">{{time}}</div>
+            <p>{{description}}</p>
+          </div>
+          {{/each}} {{/if}}
+        </div>
+        <div class="sidebar">
+          <h2>Contact</h2>
+          <p>{{phone}}<br />{{email}}<br />{{address}}</p>
+
+          {{#if skill}}
+          <h2>Skills</h2>
+          {{#each skill}}
+          <div class="skill-item">
+            <span>{{skillName}}</span>
+            <div class="skill-bar">
+              <div class="skill-level skill-level-{{yearOfExperience}}"></div>
+            </div>
+          </div>
+          {{/each}} {{/if}} {{#if language}}
+          <h2>Languages</h2>
+          {{#each language}}
+          <div class="language-item">
+            <span>{{name}}</span>
+            <div class="language-bar">
+              <div class="language-level skill-level-{{level}}"></div>
+            </div>
+          </div>
+          {{/each}} {{/if}} {{#if certification}}
+          <h2>Certifications</h2>
+          {{#each certification}}
+          <div class="certification-item">
+            <h3>{{name}}</h3>
+            <div class="time">{{time}}</div>
+          </div>
+          {{/each}} {{/if}} {{#if links}}
+          <h2>Links</h2>
+          <ul>
+            {{#each links}}
+            <li><a href="{{this}}">{{this}}</a></li>
+            {{/each}}
+          </ul>
+          {{/if}}
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -2,6 +2,9 @@ import Link from 'next/link';
 import { Upload, CheckCircle, Star } from 'lucide-react';
 import { BackgroundIcons } from '@/components/background-icons';
 import Image from 'next/image';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/authOption';
+import { redirect } from 'next/navigation';
 
 const steps = [
   {
@@ -42,7 +45,12 @@ const testimonials = [
   },
 ];
 
-export default function Page() {
+export default async function Page() {
+  const session = await getServerSession({ ...authOptions });
+  if (session?.user) {
+    redirect('/dashboard');
+  }
+
   return (
     <>
       <style>{`

@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>John Doe's Professional Resume</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Playfair+Display:wght@700&display=swap');
+
+      body {
+        font-family: 'Roboto', sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background: #f4f4f4;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        margin: 40px auto;
+        background: white;
+      }
+      .header {
+        background: #2c3e50;
+        color: white;
+        padding: 40px;
+        text-align: center;
+      }
+      .header h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: 36px;
+        margin: 0;
+      }
+      .header .title {
+        font-size: 18px;
+        margin-top: 10px;
+      }
+      .content {
+        display: flex;
+        padding: 40px;
+      }
+      .main {
+        flex: 2;
+        padding-right: 40px;
+      }
+      .sidebar {
+        flex: 1;
+        background: #ecf0f1;
+        padding: 20px;
+      }
+      h2 {
+        font-family: 'Playfair Display', serif;
+        color: #2c3e50;
+        border-bottom: 2px solid #3498db;
+        padding-bottom: 10px;
+      }
+      h3 {
+        color: #2980b9;
+      }
+      .experience-item,
+      .education-item,
+      .certification-item,
+      .publication-item {
+        margin-bottom: 20px;
+      }
+      .time {
+        font-style: italic;
+        color: #7f8c8d;
+      }
+      .skill-item,
+      .language-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+      }
+      .skill-bar,
+      .language-bar {
+        background: #bdc3c7;
+        height: 10px;
+        width: 150px;
+        border-radius: 5px;
+      }
+      .skill-level,
+      .language-level {
+        background: #3498db;
+        height: 100%;
+        border-radius: 5px;
+      }
+      .skill-level-1 {
+        width: 10%;
+      }
+      .skill-level-2 {
+        width: 20%;
+      }
+      .skill-level-3 {
+        width: 30%;
+      }
+      .skill-level-4 {
+        width: 40%;
+      }
+      .skill-level-5 {
+        width: 50%;
+      }
+      .skill-level-6 {
+        width: 60%;
+      }
+      .skill-level-7 {
+        width: 70%;
+      }
+      .skill-level-8 {
+        width: 80%;
+      }
+      .skill-level-9 {
+        width: 90%;
+      }
+      .skill-level-10 {
+        width: 100%;
+      }
+      ul {
+        padding-left: 20px;
+      }
+      a {
+        color: #3498db;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>John Doe</h1>
+        <div class="title">Senior Software Engineer</div>
+      </div>
+      <div class="content">
+        <div class="main">
+          <h2>Professional Summary</h2>
+          <p>
+            Experienced software engineer with a passion for developing
+            innovative programs that expedite the efficiency and effectiveness
+            of organizational success. Well-versed in technology and writing
+            code to create systems that are reliable and user-friendly. Skilled
+            leader who has the proven ability to motivate, educate, and manage a
+            team of professionals to build software programs and effectively
+            track changes.
+          </p>
+
+          <h2>Work Experience</h2>
+          <div class="experience-item">
+            <h3>Senior Software Engineer at Tech Innovations Inc.</h3>
+            <div class="time">January 2018 - Present</div>
+            <p>
+              Lead a team of 5 developers in creating cutting-edge web
+              applications. Implemented agile methodologies resulting in a 30%
+              increase in project completion speed.
+            </p>
+          </div>
+          <div class="experience-item">
+            <h3>Software Developer at Digital Solutions LLC</h3>
+            <div class="time">June 2015 - December 2017</div>
+            <p>
+              Developed and maintained web applications using React and Node.js.
+              Collaborated with the design team to implement user-friendly
+              interfaces.
+            </p>
+          </div>
+
+          <h2>Education</h2>
+          <div class="education-item">
+            <h3>Master of Science in Computer Science</h3>
+            <div class="time">2013 - 2015</div>
+            <p>Stanford University, Stanford, CA</p>
+          </div>
+          <div class="education-item">
+            <h3>Bachelor of Science in Software Engineering</h3>
+            <div class="time">2009 - 2013</div>
+            <p>Massachusetts Institute of Technology, Cambridge, MA</p>
+          </div>
+        </div>
+        <div class="sidebar">
+          <h2>Contact</h2>
+          <p>
+            +1 (555) 123-4567<br />john.doe@email.com<br />123 Tech Street, San
+            Francisco, CA 94122
+          </p>
+
+          <h2>Skills</h2>
+          <div class="skill-item">
+            <span>JavaScript</span>
+            <div class="skill-bar">
+              <div class="skill-level skill-level-8"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <span>React</span>
+            <div class="skill-bar">
+              <div class="skill-level skill-level-6"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <span>Node.js</span>
+            <div class="skill-bar">
+              <div class="skill-level skill-level-5"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <span>Python</span>
+            <div class="skill-bar">
+              <div class="skill-level skill-level-4"></div>
+            </div>
+          </div>
+
+          <h2>Languages</h2>
+          <div class="language-item">
+            <span>English</span>
+            <div class="language-bar">
+              <div class="language-level skill-level-10"></div>
+            </div>
+          </div>
+          <div class="language-item">
+            <span>Spanish</span>
+            <div class="language-bar">
+              <div class="language-level skill-level-7"></div>
+            </div>
+          </div>
+
+          <h2>Certifications</h2>
+          <div class="certification-item">
+            <h3>AWS Certified Solutions Architect</h3>
+            <div class="time">2020</div>
+          </div>
+          <div class="certification-item">
+            <h3>Google Cloud Professional Developer</h3>
+            <div class="time">2019</div>
+          </div>
+
+          <h2>Links</h2>
+          <ul>
+            <li>
+              <a href="https://github.com/johndoe"
+                >https://github.com/johndoe</a
+              >
+            </li>
+            <li>
+              <a href="https://linkedin.com/in/johndoe"
+                >https://linkedin.com/in/johndoe</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

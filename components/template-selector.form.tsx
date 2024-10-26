@@ -15,7 +15,7 @@ export const TemplateSelector = (props: TemplateSelectorProps) => {
   return (
     <div className="h-full pt-[120px] flex flex-col gap-8 p-4 bg-white ">
       <h1 className="text-3xl text-center">Select a Template</h1>
-      <div className="flex flex-wrap">
+      <div className="flex flex-wrap gap-4">
         {props.templates.map((template) => (
           <div
             className="flex flex-col gap-2 transition-transform transform hover:scale-105"

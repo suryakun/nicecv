@@ -1,0 +1,73 @@
+{
+  "name": "John Doe",
+  "title": "Senior Software Engineer",
+  "phone": "+1 (555) 123-4567",
+  "email": "john.doe@email.com",
+  "address": "123 Tech Street, San Francisco, CA 94122",
+  "summary": "Experienced software engineer with a passion for developing innovative programs that expedite the efficiency and effectiveness of organizational success. Well-versed in technology and writing code to create systems that are reliable and user-friendly. Skilled leader who has the proven ability to motivate, educate, and manage a team of professionals to build software programs and effectively track changes.",
+  "experience": [
+    {
+      "title": "Senior Software Engineer",
+      "company": "Tech Innovations Inc.",
+      "workTime": "January 2018 - Present",
+      "jobDetail": "Lead a team of 5 developers in creating cutting-edge web applications. Implemented agile methodologies resulting in a 30% increase in project completion speed."
+    },
+    {
+      "title": "Software Developer",
+      "company": "Digital Solutions LLC",
+      "workTime": "June 2015 - December 2017",
+      "jobDetail": "Developed and maintained web applications using React and Node.js. Collaborated with the design team to implement user-friendly interfaces."
+    }
+  ],
+  "education": [
+    {
+      "name": "Master of Science in Computer Science",
+      "time": "2013 - 2015",
+      "description": "Stanford University, Stanford, CA"
+    },
+    {
+      "name": "Bachelor of Science in Software Engineering",
+      "time": "2009 - 2013",
+      "description": "Massachusetts Institute of Technology, Cambridge, MA"
+    }
+  ],
+  "skill": [
+    {
+      "skillName": "JavaScript",
+      "yearOfExperience": 8
+    },
+    {
+      "skillName": "React",
+      "yearOfExperience": 6
+    },
+    {
+      "skillName": "Node.js",
+      "yearOfExperience": 5
+    },
+    {
+      "skillName": "Python",
+      "yearOfExperience": 4
+    }
+  ],
+  "language": [
+    {
+      "name": "English",
+      "level": 10
+    },
+    {
+      "name": "Spanish",
+      "level": 7
+    }
+  ],
+  "certification": [
+    {
+      "name": "AWS Certified Solutions Architect",
+      "time": "2020"
+    },
+    {
+      "name": "Google Cloud Professional Developer",
+      "time": "2019"
+    }
+  ],
+  "links": ["https://github.com/johndoe", "https://linkedin.com/in/johndoe"]
+}

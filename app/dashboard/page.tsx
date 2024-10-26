@@ -9,7 +9,7 @@ import { redirect } from 'next/navigation';
 export default async function Page() {
   const session = await getServerSession({ ...authOptions });
   if (!session) {
-    redirect('/select');
+    redirect('/builder/select');
   }
   const resumes = await db.resume.findMany({
     where: {
